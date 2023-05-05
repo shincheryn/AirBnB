@@ -1,4 +1,4 @@
-# AirBnB Clone by Cheryn Shin
+# Airbnb Clone by Cheryn Shin
 
 ## Database Schema Design
 
