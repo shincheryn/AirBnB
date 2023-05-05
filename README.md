@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![Database Schema](cherynshin@Cheryns-MacBook-Pro mod-4-project-assessment/db-schema/airbnb-db-schema.png
+![Database Schema](cherynshin@Cheryns-MacBook-Pro mod-4-project-assessment/db-schema/airbnb-db-schema.png)
 
 ## API Documentation
 
