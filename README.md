@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+![Database Schema](/db-schema/airbnb-db-schema)
 
 ## API Documentation
 
