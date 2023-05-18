@@ -63,4 +63,8 @@ router.post(
   );
 
 
+  //Get all Spots
+  //Get all Spots owned by the Current User
+  //Get details for a Spot from an Id
+
 module.exports = router;
