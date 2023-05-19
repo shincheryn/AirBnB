@@ -29,7 +29,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    options.tableName = 'Users';
+    options.tableName = 'Bookings';
     await queryInterface.bulkDelete(options, null, {});
   }
 };
