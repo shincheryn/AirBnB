@@ -70,8 +70,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
         validate: {
           isFloat: true,
-          min:10, // Minimum latitude value is -90
-          max:8 // Maximum latitude value is 90
+          min:-90, // Minimum latitude value is -90
+          max:90 // Maximum latitude value is 90
         },
     },
     lng: {

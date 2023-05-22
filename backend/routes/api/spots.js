@@ -24,22 +24,22 @@ router.get('/', async (req, res) => {
 });
 
 //Create a Spot
-// router.post('/', async (req, res) => {
-//   const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
-//     const spot = await Spot.create({
-//       ownerId: parseInt(ownerId),
-//       address,
-//       city,
-//       state,
-//       country,
-//       lat: parseFloat(lat),
-//       lng: parseFloat(lng),
-//       name,
-//       description,
-//       price: parseFloat(price)
-//   });
-//     return res.json(spot);
-// });
+router.post('/', async (req, res) => {
+  const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
+    const spot = await Spot.create({
+      ownerId: parseInt(ownerId),
+      address,
+      city,
+      state,
+      country,
+      lat: parseFloat(lat),
+      lng: parseFloat(lng),
+      name,
+      description,
+      price: parseFloat(price)
+  });
+    return res.json(spot);
+});
 
 // Edit a Spot
 // router.put('/:id', async (req, res) => {
@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
 // router.get('/spots/:id', async (req, res, next) => {
 
 //     const spotId = req.params.id;
-//     const spot = await Spot.findOne({
+//     const spot = await Spot.findByPk({
 //       where: { id: spotId },
 //       include: [
 //         {
