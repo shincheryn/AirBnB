@@ -66,19 +66,19 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     lat: {
-      type: DataTypes.DECIMAL(10, 8),
+      type: DataTypes.FLOAT(10, 8),
       allowNull: false,
-      validate: {
-        isDecimal: true, // Value must be a decimal number
-        min:10, // Minimum latitude value is -90
-        max:8 // Maximum latitude value is 90
-      }
+        validate: {
+          isFloat: true,
+          min:10, // Minimum latitude value is -90
+          max:8 // Maximum latitude value is 90
+        },
     },
     lng: {
       type: DataTypes.DECIMAL(11,8),
       allowNull: false,
       validate: {
-        isDecimal: true, // Value must be a decimal number
+        isFloat: true,
         min: -180, // Minimum longitude value is -180
         max: 180 // Maximum longitude value is 180
       }
@@ -96,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
       // defaultValue: true
     },
     price: {
-      type: DataTypes.DECIMAL(10,2),
+      type: DataTypes.FLOAT(10,2),
       allowNull: false
     },
     previewImage: {

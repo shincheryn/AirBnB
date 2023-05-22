@@ -25,9 +25,18 @@ router.get('/', async (req, res) => {
 
 //Create a Spot
 // router.post('/', async (req, res) => {
-//     const { address, city, state, country, name, description, price } = req.body;
+//   const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
 //     const spot = await Spot.create({
-//         address, city, state, country, name, description, price
+//       ownerId: parseInt(ownerId),
+//       address,
+//       city,
+//       state,
+//       country,
+//       lat: parseFloat(lat),
+//       lng: parseFloat(lng),
+//       name,
+//       description,
+//       price: parseFloat(price)
 //   });
 //     return res.json(spot);
 // });
@@ -56,9 +65,37 @@ router.get('/', async (req, res) => {
 // await spot.destroy();
 //}
 
-//Get all Spots owned by the Current User
-//Get details for a Spot from an id
+//Get details for a Spot from an Id
+// router.get('/spots/:id', async (req, res, next) => {
 
+//     const spotId = req.params.id;
+//     const spot = await Spot.findOne({
+//       where: { id: spotId },
+//       include: [
+//         {
+//           model: SpotImage,
+//           attributes: ['id', 'url', 'preview'],
+//         },
+//         {
+//           model: User,
+//           as: 'Owner',
+//           attributes: ['id', 'firstName', 'lastName'],
+//         },
+//       ],
+//     });
+
+//     if (!spot) {
+//       return res.status(404).json({ message: "Spot couldn't be found" });
+//     }
+
+    // const { id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt } = spot;
+    // const spotImages = spot.SpotImages;
+    // const owner = spot.Owner;
+
+    // const numReviews = spot.Reviews.length;
+    // const avgStarRating = spot.Reviews.length > 0 ? spot.Reviews.reduce((sum, review) => sum + review.stars, 0) / spot.Reviews.length : 0;
+
+// });
 
 
 module.exports = router;
