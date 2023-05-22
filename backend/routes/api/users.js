@@ -1,6 +1,8 @@
 // backend/routes/api/users.js
 const express = require('express')
 const router = express.Router();
+const { Op, Sequelize } = require('sequelize');
+const { Spot, Review } = require('../../db/models');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
@@ -48,8 +50,6 @@ router.post(
 
       const safeUser = {
         id: user.id,
-        // firstName: user.firstName,
-        // lastName: user.lastName,
         email: user.email,
         username: user.username,
       };
@@ -62,4 +62,27 @@ router.post(
     }
   );
 
+  // Get all Spots owned by the Current User
+  router.get('/users/spots', requireAuth, async (req, res, next) => {
+    const userId = req.user.id;
+    const spots = await Spot.findAll({
+        where: { ownerId: userId },
+        include: [
+          {
+            model: Review,
+            attributes: []
+          }
+        ],
+        attributes: {
+          include: [
+            [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']
+          ]
+        },
+        group: ['Spot.id']
+      });
+
+      return res.json({ Spots: spots });
+
+  });
+  
 module.exports = router;

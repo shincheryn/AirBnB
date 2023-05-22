@@ -20,18 +20,19 @@ router.get('/', async (req, res) => {
           ],
       }
     });
-    console.log(spots)
     return res.json(spots);
 });
 
-// //Create a Spot
+//Create a Spot
 // router.post('/', async (req, res) => {
-//     const { name, description } = req.body; // Assuming name and description are the required fields
-//     const spot = await Spot.create({ name, description });
+//     const { address, city, state, country, name, description, price } = req.body;
+//     const spot = await Spot.create({
+//         address, city, state, country, name, description, price
+//   });
 //     return res.json(spot);
 // });
 
-// // Edit a Spot
+// Edit a Spot
 // router.put('/:id', async (req, res) => {
 //     const { id } = req.params;
 //     const { name, description } = req.body;
@@ -43,7 +44,6 @@ router.get('/', async (req, res) => {
 //     spot.name = name;
 //     spot.description = description;
 //     return res.json(spot);
-
 // });
 
 //Delete a Spot
@@ -55,6 +55,10 @@ router.get('/', async (req, res) => {
 // }
 // await spot.destroy();
 //}
+
+//Get all Spots owned by the Current User
+//Get details for a Spot from an id
+
 
 
 module.exports = router;
