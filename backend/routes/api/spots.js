@@ -79,14 +79,13 @@ router.delete('/:id', async (req, res) => {
   const spot = await Spot.findByPk(spotId);
 
   if (!spot) {
-    return res.status(404).json({ message: 'Spot couldn\'t be found' });
+    return res.status(404).json({ message: 'Spot Not Found' });
   }
 
-  // Check if the spot belongs to the current user (Authorization logic goes here)
-  // Replace `userId` with the actual ID of the authenticated user
+  // Require Authentication: Spot must belong to Current User
   const userId = req.user.id;
   if (spot.ownerId !== userId) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'User Unauthorized' });
   }
 
   await spot.destroy();

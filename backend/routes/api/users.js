@@ -84,5 +84,7 @@ router.post(
       return res.json({ Spots: spots });
 
   });
-  
+
+  // Get all Reviews owned by the Current User
+
 module.exports = router;
