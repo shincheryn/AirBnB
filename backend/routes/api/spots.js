@@ -73,15 +73,25 @@ router.put('/:id', async (req, res) => {
     return res.json(spot);
 });
 
-//Delete a Spot
-//router.delete('/', async(req, res) => {
-//const { id } = req.params;
-// const spot = await Spot.findByPk(id);
-// if (!spot) {
-//   return res.status(404).json({ error: 'Spot not found' });
-// }
-// await spot.destroy();
-//}
+// Delete a Spot
+router.delete('/:id', async (req, res) => {
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+
+  if (!spot) {
+    return res.status(404).json({ message: 'Spot couldn\'t be found' });
+  }
+
+  // Check if the spot belongs to the current user (Authorization logic goes here)
+  // Replace `userId` with the actual ID of the authenticated user
+  const userId = req.user.id;
+  if (spot.ownerId !== userId) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  await spot.destroy();
+  return res.json({ message: 'Successfully deleted' });
+});
 
 //Get details for a Spot from an Id
 // router.get('/spots/:id', async (req, res, next) => {
