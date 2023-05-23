@@ -42,18 +42,36 @@ router.post('/', async (req, res) => {
 });
 
 // Edit a Spot
-// router.put('/:id', async (req, res) => {
-//     const { id } = req.params;
-//     const { name, description } = req.body;
-//     const spot = await Spot.findByPk(id);
-//     if (!spot) {
-//       return res.status(404).json({ error: 'Spot not found' });
-//     }
-//     //else
-//     spot.name = name;
-//     spot.description = description;
-//     return res.json(spot);
-// });
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+  const spot = await Spot.findByPk(id);
+    // Check if Spot exists
+    if (!spot) {
+      return res.status(404).json({ message: "Spot Not Found" });
+    }
+
+    // Check if Spot belongs to Current User
+    if (spot.ownerId !== req.user.id) {
+      return res.status(400).json({ message: 'Bad Request' });
+    }
+
+    // Update Spot
+    spot.address = address;
+    spot.city = city;
+    spot.state = state;
+    spot.country = country;
+    spot.lat = parseFloat(lat);
+    spot.lng = parseFloat(lng);
+    spot.name = name;
+    spot.description = description;
+    spot.price = parseFloat(price);
+
+    await spot.save();
+
+    return res.json(spot);
+});
 
 //Delete a Spot
 //router.delete('/', async(req, res) => {
