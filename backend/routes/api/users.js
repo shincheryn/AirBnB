@@ -86,23 +86,23 @@ router.post(
   });
 
 // *Get all of the Current User's Bookings*
-router.get('/bookings', requireAuth, async (req, res) => {
-  const userId = req.user.id;
+// router.get('/bookings', requireAuth, async (req, res) => {
+//   const userId = req.user.id;
 
-  //304 error?? after 200?
-  // Bookings for Current User
-  const bookings = await Booking.findAll({
-    where: { userId },
-    include: [
-      {
-        model: Spot,
-        attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
-      },
-    ],
-  });
+//   //304 error?? after 200?
+//   // Bookings for Current User
+//   const bookings = await Booking.findAll({
+//     where: { userId },
+//     include: [
+//       {
+//         model: Spot,
+//         attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
+//       },
+//     ],
+//   });
 
-  return res.json({ Bookings: bookings });
-});
+//   return res.json({ Bookings: bookings });
+// });
 
 // Get all Reviews owned by the Current User
 //version 1
