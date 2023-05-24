@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
         constraints: false,
         scope: {
           imageableType: 'Review'
-        }
+        },
+        //alias for Review Images
+        as: 'ReviewImages'
       });
 
       // Many-to-one relationship with Spot
@@ -23,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 
     }
   };
-  
+
   Review.init(
     {
       id: {

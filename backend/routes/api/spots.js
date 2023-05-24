@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Op, Sequelize } = require('sequelize');
-const { Spot, Review } = require('../../db/models');
+const { User, Spot, Review, Image } = require('../../db/models');
 
-// Get all Spots
+// *Get all Spots*
 router.get('/', async (req, res) => {
     const spots = await Spot.findAll({
       include: {
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
     return res.json(spots);
 });
 
-//Create a Spot
+// *Create a Spot*
 router.post('/', async (req, res) => {
   const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
     const spot = await Spot.create({
@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
     return res.json(spot);
 });
 
-// Edit a Spot
+// *Edit a Spot*
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -73,7 +73,7 @@ router.put('/:id', async (req, res) => {
     return res.json(spot);
 });
 
-// Delete a Spot
+// *Delete a Spot*
 router.delete('/:id', async (req, res) => {
   const spotId = req.params.id;
   const spot = await Spot.findByPk(spotId);
@@ -93,36 +93,30 @@ router.delete('/:id', async (req, res) => {
 });
 
 //Get details for a Spot from an Id
-// router.get('/spots/:id', async (req, res, next) => {
-
-//     const spotId = req.params.id;
-//     const spot = await Spot.findByPk({
-//       where: { id: spotId },
-//       include: [
-//         {
-//           model: SpotImage,
-//           attributes: ['id', 'url', 'preview'],
-//         },
-//         {
+// router.get('/:id', async (req, res) => {
+//   const spotId = req.params.id;
+//   const spot = await Spot.findByPk(spotId, {
+//     include: [
+//       {
+//         model: Spot,
+//         include: {
 //           model: User,
-//           as: 'Owner',
-//           attributes: ['id', 'firstName', 'lastName'],
+//           as: 'ownerId',
 //         },
-//       ],
-//     });
+//       },
+//       {
+//         model: Image,
+//         as: 'SpotImages',
+//         attributes: ['id', 'url', 'preview'],
+//       },
+//     ],
+//   });
 
-//     if (!spot) {
-//       return res.status(404).json({ message: "Spot couldn't be found" });
-//     }
+//   if (!spot) {
+//     return res.status(404).json({ message: 'Spot Not Found' });
+//   }
 
-    // const { id, ownerId, address, city, state, country, lat, lng, name, description, price, createdAt, updatedAt } = spot;
-    // const spotImages = spot.SpotImages;
-    // const owner = spot.Owner;
-
-    // const numReviews = spot.Reviews.length;
-    // const avgStarRating = spot.Reviews.length > 0 ? spot.Reviews.reduce((sum, review) => sum + review.stars, 0) / spot.Reviews.length : 0;
-
+//   return res.status(200).json({ Spots: spot });
 // });
-
 
 module.exports = router;

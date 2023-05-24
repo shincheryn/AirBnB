@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         constraints: false,
         scope: {
           imageableType: 'Review'
-        }
+        },
+        as: 'ReviewImages'
       });
 
       // One-to-many association with Spot
@@ -21,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
         constraints: false,
         scope: {
           id: 'Spot'
-        }
+        },
+        as: 'SpotImages'
       });
     }
   };

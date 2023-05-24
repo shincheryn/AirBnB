@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         constraints: false,
         scope: {
           imageableType: 'Spot'
-        }
+        },
+        //alias for Spot Images
+        as: 'SpotImages'
+
       });
 
       // Many-to-one relationship with User
@@ -93,7 +96,6 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
-      // defaultValue: true
     },
     price: {
       type: DataTypes.FLOAT(10,2),
