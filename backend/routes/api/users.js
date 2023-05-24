@@ -85,11 +85,11 @@ router.post(
 
   });
 
+//Check for 304 Error
 // *Get all of the Current User's Bookings*
 router.get('/bookings', requireAuth, async (req, res) => {
   const userId = req.user.id;
 
-  //304 error?? after 200?
   // Bookings for Current User
   const bookings = await Booking.findAll({
     where: { userId },
