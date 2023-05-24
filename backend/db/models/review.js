@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       // Many-to-one relationship with Image (polymorphic)
-      Review.belongsTo(models.Image, {
+      Review.hasMany(models.Image, {
         foreignKey: 'imageableId',
         constraints: false,
         scope: {

@@ -86,86 +86,55 @@ router.post(
   });
 
 // *Get all of the Current User's Bookings*
-// router.get('/bookings', requireAuth, async (req, res) => {
-//   const userId = req.user.id;
+router.get('/bookings', requireAuth, async (req, res) => {
+  const userId = req.user.id;
 
-//   //304 error?? after 200?
-//   // Bookings for Current User
-//   const bookings = await Booking.findAll({
-//     where: { userId },
-//     include: [
-//       {
-//         model: Spot,
-//         attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
-//       },
-//     ],
-//   });
+  //304 error?? after 200?
+  // Bookings for Current User
+  const bookings = await Booking.findAll({
+    where: { userId },
+    include: [
+      {
+        model: Spot,
+        attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
+      },
+    ],
+  });
 
-//   return res.json({ Bookings: bookings });
-// });
+  return res.json({ Bookings: bookings });
+});
 
-// Get all Reviews owned by the Current User
-//version 1
-// router.get('/reviews', requireAuth, async (req, res) => {
-//     const userId = req.user.id;
-//     const reviews = await Review.findAll({
-//       where: { userId },
-//       include: [
-//         {
-//           model: User,
-//           attributes: ['id', 'firstName', 'lastName', 'email', 'username'],
-//         },
-//         {
-//           model: Review,
-//           include: [
-//             {
-//               model: Image,
-//               as: 'ReviewImages',
-//               attributes: ['id', 'url', 'preview'],
-//             },
-//           ],
-//         },
-//         {
-//           model: Spot,
-//           include: [
-//             {
-//               model: Image,
-//               as: 'SpotImages',
-//               attributes: ['id', 'url', 'preview'],
-//             },
-//           ],
-//         },
+// *Get all Reviews owned by the Current User*
+router.get('/reviews', requireAuth, async (req, res) => {
+    const userId = req.user.id;
+    const reviews = await Review.findAll({
+      where: { userId },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'firstName', 'lastName', 'email', 'username'],
+        },
+        {
+          model: Image,
+          as: 'ReviewImages',
+          attributes: ['url', 'preview'],
+        },
+        {
+          model: Spot,
+          include: [
+            {
+              model: Image,
+              as: 'SpotImages',
+              attributes: [ 'url', 'preview'],
+            },
+          ],
+        },
 
-//       ],
-//     });
+      ],
+    });
+    console.log(reviews)
 
-//     return res.json({ Reviews: reviews });
-// });
-
-//version 2
-// router.get('/reviews', requireAuth, async (req, res) => {
-//   const userId = req.user.id;
-//   const reviews = await Review.findAll({
-//     where: { userId },
-//     include: [
-//       {
-//         model: User,
-//         attributes: ['id', 'firstName', 'lastName', 'email', 'username'],
-//       },
-//       {
-//         model: Image,
-//         as: 'ReviewImages',
-//         attributes: ['id', 'url', 'preview'],
-//       },
-//       {
-//         model: Image,
-//         as: 'SpotImages',
-//         attributes: ['id', 'url', 'preview'],
-//       },
-//     ],
-//   });
-
-//   return res.json({ Reviews: reviews });
-// });
+    return res.json({ Reviews: reviews });
+});
 
 module.exports = router;
