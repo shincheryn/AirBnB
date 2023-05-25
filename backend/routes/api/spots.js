@@ -219,7 +219,7 @@ router.get('/:spotId/bookings', async (req, res) => {
     }
 });
 
-//ERROR MESSAGES DONT WORK
+//ERROR MESSAGES DONT SHOW
 // Edit a Review
 router.put('/reviews/:id', async (req, res) => {
   const reviewId = req.params.id;
