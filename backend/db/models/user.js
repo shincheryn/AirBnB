@@ -3,7 +3,7 @@ const { Model, Validator } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    
+
       static associate(models) {
       // One-to-many relationship with Booking
       User.hasMany(models.Booking, {foreignKey: 'userId'});

@@ -39,7 +39,7 @@ const validateSignup = [
     handleValidationErrors
   ];
 
-// Sign up
+// *Sign Up*
 router.post(
     '',
     validateSignup,
@@ -85,25 +85,6 @@ router.post(
 
   });
 
-//Check for 304 Error
-// *Get all of the Current User's Bookings*
-router.get('/bookings', requireAuth, async (req, res) => {
-  const userId = req.user.id;
-
-  // Bookings for Current User
-  const bookings = await Booking.findAll({
-    where: { userId },
-    include: [
-      {
-        model: Spot,
-        attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
-      },
-    ],
-  });
-
-  return res.json({ Bookings: bookings });
-});
-
 // *Get all Reviews owned by the Current User*
 router.get('/reviews', requireAuth, async (req, res) => {
     const userId = req.user.id;
@@ -125,16 +106,32 @@ router.get('/reviews', requireAuth, async (req, res) => {
             {
               model: Image,
               as: 'SpotImages',
-              attributes: [ 'url', 'preview'],
+              attributes: ['url', 'preview'],
             },
           ],
         },
 
       ],
     });
-    console.log(reviews)
-
     return res.json({ Reviews: reviews });
+});
+
+// Get all of the Current User's Bookings
+router.get('/bookings', requireAuth, async (req, res) => {
+  const userId = req.user.id;
+
+  // Bookings for Current User
+  const bookings = await Booking.findAll({
+    where: { userId },
+    include: [
+      {
+        model: Spot,
+        attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
+      },
+    ],
+  });
+
+  return res.json({ Bookings: bookings });
 });
 
 module.exports = router;

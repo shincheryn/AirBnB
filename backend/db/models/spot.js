@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       // Many-to-one relationship with User
-      Spot.belongsTo(models.User, {foreignKey: 'ownerId'});
+      Spot.belongsTo(models.User, {foreignKey: 'ownerId', as: "Owner"});
     }
   };
 
