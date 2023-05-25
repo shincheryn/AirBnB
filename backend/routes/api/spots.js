@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
       state,
       country,
       lat: parseFloat(lat),
-      lng: parseFloat(lng),
+      lng: parseFlcurroat(lng),
       name,
       description,
       price: parseFloat(price)
@@ -93,7 +93,7 @@ router.delete('/:id', async (req, res) => {
     return res.json({ message: 'Successfully deleted' });
 });
 
-//*Get Details for Spot from Id*
+//*Get Details for a Spot from an Id*
 router.get('/:id', async (req, res) => {
     const spotId = req.params.id;
     const spot = await Spot.findByPk(spotId, {
@@ -147,40 +147,76 @@ router.get('/:id', async (req, res) => {
     });
 });
 
-// Get all Bookings for a Spot based on Spot Id
-// router.get('/:spotId/bookings', async (req, res) => {
-//     const spotId = req.params.spotId;
+//ERROR MESSAGES DONT SHOW
+// Create a Review for a Spot based on the Spot's Id
+router.post('/:spotId/reviews', async (req, res) => {
+  const spotId = req.params.spotId;
+  const userId = req.user.id;
+  const { review, stars } = req.body;
 
-//     // Check if Spot exists
-//     const spot = await Spot.findByPk(spotId);
-//     if (!spot) {
-//       return res.status(404).json({ message: 'Spot Not Found' });
-//     }
+  // Check if Spot Exists
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({ message: "Spot Not Found" });
+  }
 
-//     // Find Bookings for Spot
-//     const bookings = await Booking.findAll({
-//       where: { spotId },
-//       include: {
-//         model: User,
-//         attributes: ['firstName', 'lastName'],
-//       },
-//     });
+  // Check if Current User already has Review for Spot
+  const existingReview = await Review.findOne({
+    where: { spotId, userId },
+  });
+  if (existingReview) {
+    return res.status(500).json({ message: "User already has a review for this spot" });
+  }
 
-//     // Check Current User is Spot Owner
-//     const userId = parseInt(req.user.id);
-//     const ownerId = parseInt(spot.ownerId);
-//     if (ownerId === userId) {
-//       return res.json({ Bookings: bookings });
-//     }
+  // Create Review
+  const newReview = await Review.create({
+    spotId,
+    userId,
+    review,
+    stars,
+  });
 
-//     // If Current User is NOT Spot Owner, return just Spot
-//     const spotBookings = [];
-//     for (const booking of bookings) {
-//       const { spotId, startDate, endDate } = booking;
-//       spotBookings.push({ spotId, startDate, endDate });
-//     }
+  return res.json(newReview);
+});
 
-//   return res.json({ Bookings: spotBooking });
-// });
+// *Get all Bookings for a Spot based on Spot Id*
+router.get('/:spotId/bookings', async (req, res) => {
+    const spotId = req.params.spotId;
+
+    // Check if Spot Exists
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+      return res.status(404).json({ message: 'Spot Not Found' });
+    }
+
+    // Find all Bookings for Current User using Spot Id
+    const bookings = await Booking.findAll({
+      where: { spotId },
+      include: {
+        model: User,
+        attributes: ['firstName', 'lastName'],
+      },
+    });
+
+    // Check Current User is Spot Owner
+    const userId = parseInt(req.user.id);
+    const ownerId = parseInt(spot.ownerId);
+
+    if (ownerId === userId) {
+      return res.json({ Bookings: bookings });
+    } else {
+      let spots = []
+      for (let i = 0; i < bookings.length; i++) {
+        spots.push(
+          {
+            spotId: bookings[i].spotId,
+            startDate: bookings[i].startDate,
+            endDate: bookings[i].endDate
+          }
+        );
+      }
+      return res.json({ Bookings: spots });
+    }
+});
 
 module.exports = router;

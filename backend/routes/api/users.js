@@ -85,7 +85,7 @@ router.post(
 
   });
 
-// *Get all Reviews owned by the Current User*
+// *Get all Reviews of the Current User*
 router.get('/reviews', requireAuth, async (req, res) => {
     const userId = req.user.id;
     const reviews = await Review.findAll({
