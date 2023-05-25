@@ -55,7 +55,7 @@ router.put('/:id', async (req, res) => {
 
       // Check if Spot belongs to Current User
       if (spot.ownerId !== req.user.id) {
-        return res.status(400).json({ message: 'Bad Request' });
+        return res.status(403).json({ message: 'Unauthorized User' });
       }
 
       // Update Spot
@@ -218,5 +218,44 @@ router.get('/:spotId/bookings', async (req, res) => {
       return res.json({ Bookings: spots });
     }
 });
+
+//ERROR MESSAGES DONT WORK
+// Edit a Review
+router.put('/reviews/:id', async (req, res) => {
+  const reviewId = req.params.id;
+  const { review: updatedReview, stars } = req.body;
+
+  // Check if Review Exists
+  const review = await Review.findByPk(reviewId);
+  if (!review) {
+    return res.status(404).json({ message: 'Review Not Found' });
+  }
+
+  // Check if Review belongs to Current User
+  if (review.userId !== req.user.id) {
+    return res.status(403).json({ message: 'Unauthorized User' });
+  }
+
+  // Validate Request Body
+  if (!updatedReview || !stars) {
+    return res.status(400).json({
+      message: 'Bad Request',
+      errors: {
+        review: 'Review text is required',
+        stars: 'Stars must be an integer from 1 to 5',
+      },
+    });
+  }
+
+  // Update Review
+  review.spotId;
+  review.userId;
+  review.review = updatedReview;
+  review.stars = stars;
+  await review.save();
+
+  return res.json(review);
+});
+
 
 module.exports = router;
