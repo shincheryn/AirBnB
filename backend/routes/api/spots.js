@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Op, Sequelize } = require('sequelize');
 const { User, Spot, Review, Image, Booking } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
 
 // *Get all Spots*
 router.get('/', async (req, res) => {
@@ -43,19 +44,23 @@ router.post('/', async (req, res) => {
 });
 
 // *Edit a Spot*
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res, next) => {
     const { id } = req.params;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const spot = await Spot.findByPk(id);
       // Check if Spot exists
       if (!spot) {
-        return res.status(404).json({ message: "Spot Not Found" });
+        const err = new Error('Spot Not Found');
+        err.status = 404;
+        return next(err);
       }
 
       // Check if Spot belongs to Current User
       if (spot.ownerId !== req.user.id) {
-        return res.status(403).json({ message: 'Unauthorized User' });
+        const err = new Error('Unauthorized User');
+        err.status = 403;
+        return next(err);
       }
 
       // Update Spot
@@ -75,18 +80,22 @@ router.put('/:id', async (req, res) => {
 });
 
 // *Delete a Spot*
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res, next) => {
     const spotId = req.params.id;
     const spot = await Spot.findByPk(spotId);
 
     if (!spot) {
-      return res.status(404).json({ message: 'Spot Not Found' });
+      const err = new Error('Spot Not Found');
+      err.status = 404;
+      return next(err);
     }
 
     // Require Authentication: Spot must belong to Current User
     const userId = req.user.id;
     if (spot.ownerId !== userId) {
-      return res.status(401).json({ message: 'User Unauthorized' });
+      const err = new Error('User Unauthorized');
+      err.status = 401;
+      return next(err);
     }
 
     await spot.destroy();
@@ -147,36 +156,39 @@ router.get('/:id', async (req, res) => {
     });
 });
 
-//ERROR MESSAGES DONT SHOW
-// Create a Review for a Spot based on the Spot's Id
-router.post('/:spotId/reviews', async (req, res) => {
-  const spotId = req.params.spotId;
-  const userId = req.user.id;
-  const { review, stars } = req.body;
+// *Create a Review for a Spot based on the Spot's Id*
+router.post('/:spotId/reviews', async (req, res, next) => {
+    const spotId = req.params.spotId;
+    const userId = req.user.id;
+    const { review, stars } = req.body;
 
-  // Check if Spot Exists
-  const spot = await Spot.findByPk(spotId);
-  if (!spot) {
-    return res.status(404).json({ message: "Spot Not Found" });
-  }
+    // Check if Spot Exists
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+      const err = new Error('Spot Not Found');
+      err.status = 404;
+      return next(err);
+    }
 
-  // Check if Current User already has Review for Spot
-  const existingReview = await Review.findOne({
-    where: { spotId, userId },
-  });
-  if (existingReview) {
-    return res.status(500).json({ message: "User already has a review for this spot" });
-  }
+    // Check if Current User already has Review for Spot
+    const existingReview = await Review.findOne({
+      where: { spotId, userId },
+    });
+    if (existingReview) {
+      const err = new Error('User already has a review for this spot');
+      err.status = 500;
+      return next(err);
+    }
 
-  // Create Review
-  const newReview = await Review.create({
-    spotId,
-    userId,
-    review,
-    stars,
-  });
+    // Create Review
+    const newReview = await Review.create({
+      spotId,
+      userId,
+      review,
+      stars,
+    });
 
-  return res.json(newReview);
+    return res.json(newReview);
 });
 
 // *Get all Bookings for a Spot based on Spot Id*
@@ -219,42 +231,39 @@ router.get('/:spotId/bookings', async (req, res) => {
     }
 });
 
-//ERROR MESSAGES DONT SHOW
-// Edit a Review
-router.put('/reviews/:id', async (req, res) => {
-  const reviewId = req.params.id;
-  const { review: updatedReview, stars } = req.body;
+// *Edit a Review*
+router.put('/reviews/:id', requireAuth, async (req, res, next) => {
+    const reviewId = req.params.id;
+    const { review: updatedReview, stars } = req.body;
 
-  // Check if Review Exists
-  const review = await Review.findByPk(reviewId);
-  if (!review) {
-    return res.status(404).json({ message: 'Review Not Found' });
-  }
+    // Check if Review Exists
+    const review = await Review.findByPk(reviewId);
+    if (!review) {
+      const err = new Error('Review Not Found');
+      err.status = 404;
+      return next(err);
+    }
 
-  // Check if Review belongs to Current User
-  if (review.userId !== req.user.id) {
-    return res.status(403).json({ message: 'Unauthorized User' });
-  }
+    // Check if Review belongs to Current User
+    if (review.userId !== req.user.id) {
+      const err = new Error('Unauthorized User');
+      err.status = 403;
+      return next(err);
+    }
 
-  // Validate Request Body
-  if (!updatedReview || !stars) {
-    return res.status(400).json({
-      message: 'Bad Request',
-      errors: {
-        review: 'Review text is required',
-        stars: 'Stars must be an integer from 1 to 5',
-      },
-    });
-  }
+    // Validate Request Body
+    if (!updatedReview || !stars) {
+      const err = new Error('Bad Request');
+      err.status = 400;
+      return next(err);
+    }
 
-  // Update Review
-  review.spotId;
-  review.userId;
-  review.review = updatedReview;
-  review.stars = stars;
-  await review.save();
+    // Update Review
+    review.review = updatedReview;
+    review.stars = stars;
+    await review.save();
 
-  return res.json(review);
+    return res.json(review);
 });
 
 
