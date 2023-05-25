@@ -266,5 +266,4 @@ router.put('/reviews/:id', requireAuth, async (req, res, next) => {
     return res.json(review);
 });
 
-
 module.exports = router;
