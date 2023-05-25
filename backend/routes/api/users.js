@@ -117,21 +117,21 @@ router.get('/reviews', requireAuth, async (req, res) => {
 });
 
 // Get all of the Current User's Bookings
-router.get('/bookings', requireAuth, async (req, res) => {
-  const userId = req.user.id;
+// router.get('/bookings', requireAuth, async (req, res) => {
+//   const userId = req.user.id;
 
-  // Bookings for Current User
-  const bookings = await Booking.findAll({
-    where: { userId },
-    include: [
-      {
-        model: Spot,
-        attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
-      },
-    ],
-  });
+//   // Bookings for Current User
+//   const bookings = await Booking.findAll({
+//     where: { userId },
+//     include: [
+//       {
+//         model: Spot,
+//         attributes: ['ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'],
+//       },
+//     ],
+//   });
 
-  return res.json({ Bookings: bookings });
-});
+//   return res.json({ Bookings: bookings });
+// });
 
 module.exports = router;
