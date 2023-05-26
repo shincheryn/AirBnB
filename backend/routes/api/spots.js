@@ -241,6 +241,19 @@ router.get('/:id', async (req, res) => {
       ],
       attributes: {
         include: [
+          'id',
+          'ownerId',
+          'address',
+          'city',
+          'state',
+          'country',
+          'lat',
+          'lng',
+          'name',
+          'description',
+          'price',
+          'createdAt',
+          'updatedAt',
           [ Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating' ],
           [ Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews' ],
         ],
@@ -261,6 +274,7 @@ router.get('/:id', async (req, res) => {
 
     //If Spot Found
     return res.status(200).json({
+      id: spot.id,
       ownerId: spot.ownerId,
       address: spot.address,
       city: spot.city,
