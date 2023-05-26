@@ -94,7 +94,8 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     preview
   });
 
-  return res.json({newImage: url, preview});
+  return res.json({ url: newImage.url, preview: newImage.preview });
+
 });
 
 /*--------------------*/
