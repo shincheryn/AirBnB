@@ -47,7 +47,7 @@ router.post('/', async (req, res, next) => {
       err.status = 400;
       return next(err);
   }
-  
+
   // Create Spot
     const spot = await Spot.create({
       ownerId: parseInt(ownerId),
@@ -66,7 +66,6 @@ router.post('/', async (req, res, next) => {
 
 });
 
-/*--------------------*/
 // *Add an Image to a Spot based on Spot Id*
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   const spotId = req.params.spotId;
@@ -89,8 +88,6 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
   // Create Image
   const newImage = await Image.create({
-    imageableId: spot.id,
-    imageableType: 'SpotImages',
     url,
     preview
   });
@@ -98,6 +95,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   return res.json(newImage);
 });
 
+/*--------------------*/
 
 // *Edit a Spot*
 router.put('/:id', requireAuth, async (req, res, next) => {
