@@ -247,7 +247,8 @@ router.get('/:id', async (req, res) => {
       },
       group: [
         'Spot.id',
-        'SpotImages.id'
+        'SpotImages.id',
+        'Owner.id'
       ],
     });
 
