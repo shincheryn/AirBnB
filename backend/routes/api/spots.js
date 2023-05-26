@@ -9,7 +9,9 @@ router.get('/', async (req, res) => {
     const spots = await Spot.findAll({
       include: {
         model: Review,
-        attributes: []
+        attributes: [],
+        required: true,
+        duplicating: false
       },
       attributes: {
         include: [
