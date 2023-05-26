@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
       },
       group: [
         'Spot.id',
-        'Review.id'
         ],
     });
 
