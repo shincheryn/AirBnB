@@ -33,7 +33,16 @@ router.post('/', async (req, res, next) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
   // Body Validation
-  if (!address || !city || !state || !country || !lat || !lng || !name || !description || !price) {
+  if (typeof address !== 'string' ||
+      typeof city !== 'string' ||
+      typeof state !== 'string'||
+      typeof country !== 'string' ||
+      typeof lat !== 'number' ||
+      typeof lng !== 'number' ||
+      typeof name !== 'string' ||
+      typeof description !== 'string' ||
+      typeof price !== 'number') {
+
       const err = new Error ('Bad Request');
       err.status = 400;
       return next(err);
@@ -56,6 +65,7 @@ router.post('/', async (req, res, next) => {
 
 });
 
+/*--------------------*/
 // *Add an Image to a Spot based on Spot Id*
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   const spotId = req.params.spotId;
