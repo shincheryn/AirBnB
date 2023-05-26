@@ -15,11 +15,11 @@ router.get('/', async (req, res) => {
         include: [
           [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']
         ],
+      },
       group: [
-          'Spot.id',
-          'Review.id'
-          ],
-      }
+        'Spot.id',
+        'Review.id'
+        ],
     });
 
     return res.json({ Spots: spots });
