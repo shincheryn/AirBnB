@@ -25,6 +25,7 @@ router.get('/', async (req, res) => {
     return res.json({ Spots: spots });
 });
 
+
 // *Create a Spot*
 router.post('/', async (req, res) => {
   const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -42,6 +43,7 @@ router.post('/', async (req, res) => {
   });
     return res.json(spot);
 });
+
 
 // *Add an Image to a Spot based on Spot Id*
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
@@ -73,7 +75,6 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
   return res.json(newImage);
 });
-
 
 
 // *Edit a Spot*
@@ -112,6 +113,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     return res.json(spot);
 });
 
+
 // *Delete a Spot*
 router.delete('/:id', requireAuth, async (req, res, next) => {
     const spotId = req.params.id;
@@ -134,6 +136,7 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
     await spot.destroy();
     return res.json({ message: 'Successfully deleted' });
 });
+
 
 //*Get Details for a Spot from an Id*
 router.get('/:id', async (req, res) => {
@@ -189,6 +192,7 @@ router.get('/:id', async (req, res) => {
     });
 });
 
+
 // *Create a Review for a Spot based on the Spot's Id*
 router.post('/:spotId/reviews', async (req, res, next) => {
     const spotId = req.params.spotId;
@@ -223,6 +227,7 @@ router.post('/:spotId/reviews', async (req, res, next) => {
 
     return res.json(newReview);
 });
+
 
 // *Get all Bookings for a Spot based on Spot Id*
 router.get('/:spotId/bookings', async (req, res) => {
@@ -264,39 +269,5 @@ router.get('/:spotId/bookings', async (req, res) => {
     }
 });
 
-// *Edit a Review*
-router.put('/reviews/:id', requireAuth, async (req, res, next) => {
-    const reviewId = req.params.id;
-    const { review: updatedReview, stars } = req.body;
-
-    // Check if Review Exists
-    const review = await Review.findByPk(reviewId);
-    if (!review) {
-      const err = new Error('Review Not Found');
-      err.status = 404;
-      return next(err);
-    }
-
-    // Check if Review belongs to Current User
-    if (review.userId !== req.user.id) {
-      const err = new Error('Unauthorized User');
-      err.status = 403;
-      return next(err);
-    }
-
-    // Validate Request Body
-    if (!updatedReview || !stars) {
-      const err = new Error('Bad Request');
-      err.status = 400;
-      return next(err);
-    }
-
-    // Update Review
-    review.review = updatedReview;
-    review.stars = stars;
-    await review.save();
-
-    return res.json(review);
-});
 
 module.exports = router;
