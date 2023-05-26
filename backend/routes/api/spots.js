@@ -192,9 +192,8 @@ router.put('/:id', requireAuth, async (req, res, next) => {
   return res.json(spot);
 });
 
-/*--------------------*/
 
-// *Delete a Spot*
+// *DELETE A SPOT*
 router.delete('/:id', requireAuth, async (req, res, next) => {
     const spotId = req.params.id;
     const spot = await Spot.findByPk(spotId);
@@ -218,7 +217,7 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
 });
 
 
-//*Get Details for a Spot from an Id*
+//*Get Details of a Spot from an Id*
 router.get('/:id', async (req, res) => {
     const spotId = req.params.id;
     const spot = await Spot.findByPk(spotId, {
@@ -235,7 +234,9 @@ router.get('/:id', async (req, res) => {
         },
         {
           model: Review,
-          attributes: []
+          attributes: [],
+          required: true,
+          duplicating: false
         }
       ],
       attributes: {
@@ -272,6 +273,7 @@ router.get('/:id', async (req, res) => {
     });
 });
 
+/*---------*/
 
 // *Create a Review for a Spot based on the Spot's Id*
 router.post('/:spotId/reviews', async (req, res, next) => {
