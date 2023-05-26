@@ -218,7 +218,7 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
 
 
 //*Get Details of a Spot from an Id*
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     const spotId = req.params.id;
     const spot = await Spot.findByPk(spotId, {
       include: [
@@ -296,7 +296,7 @@ router.get('/:id', async (req, res) => {
 
 /*---------*/
 
-// *Create a Review for a Spot based on the Spot's Id*
+// *CREATE A REVIEW FOR A SPOT BASED ON THE SPOT'S ID*
 router.post('/:spotId/reviews', async (req, res, next) => {
     const spotId = req.params.spotId;
     const userId = req.user.id;
