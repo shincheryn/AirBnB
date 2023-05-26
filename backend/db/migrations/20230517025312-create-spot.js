@@ -30,11 +30,11 @@ module.exports = {
         allowNull: false
       },
       lat: {
-        type: Sequelize.FLOAT(10,8),
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
       lng: {
-        type: Sequelize.FLOAT(11,8),
+        type: Sequelize.FLOAT,
         allowNull: false
       },
       name: {
@@ -47,7 +47,7 @@ module.exports = {
         defaultValue: ''
       },
       price: {
-        type: Sequelize.FLOAT(10,2),
+        type: Sequelize.FLOAT,
         allowNull: false
       },
       previewImage: {
