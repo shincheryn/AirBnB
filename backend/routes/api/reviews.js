@@ -101,14 +101,14 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
       return next(err);
     }
 
-    // Check if Review belongs to the Current User
+    // Check if Review belongs to Current User
     if (review.userId !== req.user.id) {
       const err = new Error('Unauthorized User');
       err.status = 403;
       return next(err);
     }
 
-    // Delete the Review
+    // Delete Review
     await review.destroy();
 
     return res.status(200).json({ message: 'Successfully deleted' });
