@@ -47,6 +47,7 @@ router.post('/', async (req, res, next) => {
       err.status = 400;
       return next(err);
   }
+  
   // Create Spot
     const spot = await Spot.create({
       ownerId: parseInt(ownerId),
