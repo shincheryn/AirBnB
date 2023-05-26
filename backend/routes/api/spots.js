@@ -243,13 +243,18 @@ router.get('/:id', async (req, res) => {
         include: [
           [ Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating' ],
           [ Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews' ],
-        ]
-      }
+        ],
+      },
+      group: [
+        'Spot.id'
+      ],
     });
 
     //If Spot Not Found
     if (!spot) {
-      return res.status(404).json({ message: 'Spot Not Found' });
+      const err = new Error('Spot Not Found');
+      err.status = 404;
+      return next(err);
     }
 
     //If Spot Found
