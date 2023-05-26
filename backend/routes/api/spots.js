@@ -28,8 +28,17 @@ router.get('/', async (req, res) => {
 
 
 // *Create a Spot*
-router.post('/', async (req, res) => {
-  const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
+router.post('/', async (req, res, next) => {
+  const ownerId = req.user.id;
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+  // Body Validation
+  if (!address || !city || !state || !country || !lat || !lng || !name || !description || !price) {
+      const err = new Error ('Bad Request');
+      err.status = 400;
+      return next(err);
+  }
+  // Create Spot
     const spot = await Spot.create({
       ownerId: parseInt(ownerId),
       address,
@@ -37,14 +46,15 @@ router.post('/', async (req, res) => {
       state,
       country,
       lat: parseFloat(lat),
-      lng: parseFlcurroat(lng),
+      lng: parseFloat(lng),
       name,
       description,
       price: parseFloat(price)
-  });
-    return res.json(spot);
-});
+    });
 
+    return res.status(201).json(spot);
+
+});
 
 // *Add an Image to a Spot based on Spot Id*
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
