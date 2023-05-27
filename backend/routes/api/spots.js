@@ -395,6 +395,13 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
       return next(err);
     }
 
+    // Body Validation
+    if (new Date(endDate) <= new Date(startDate)) {
+      const err = new Error ('End date cannot be on or before the start date')
+      res.status(400);
+      return next(err);
+    }
+
     // Check if Spot is already booked for specified dates
     const existingBooking = await Booking.findOne({
       where: {
