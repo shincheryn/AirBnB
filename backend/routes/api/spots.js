@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
       include: {
         model: Review,
         attributes: [],
-        required: true,
-        duplicating: false
+        // required: true,
+        // duplicating: false
       },
       attributes: {
         include: [
