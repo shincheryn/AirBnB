@@ -79,7 +79,7 @@ router.get('/', async (req, res) => {
         'price',
         'createdAt',
         'updatedAt',
-        [avgRating, ]
+        [avgRating, 'avgRating']
       ],
       where: {
         lat: { [Op.between]: [minLat, maxLat] },
