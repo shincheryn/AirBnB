@@ -99,9 +99,25 @@ router.get('/', async (req, res) => {
     });
 
     return res.json({
-      Spots: spots,
-      page,
-      size,
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat: spot.lat,
+        lng: spot.lng,
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt,
+        numReviews: spot.getDataValue('numReviews'),
+        avgStarRating: spot.getDataValue('avgRating'),
+        SpotImages: spot.SpotImages,
+        Owner: spot.Owner,
+        page,
+        size
     });
 });
 
