@@ -26,7 +26,7 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
     }
 
     // Check Image belongs to Current User
-    const table = await model.findByPk(image.imageableId);
+    const table = await model.findByPk(Image.imageableId);
     if (!table || table.ownerId !== req.user.id) {
         const err = new Error('Unauthorized User');
         err.status = 403;
