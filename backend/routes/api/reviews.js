@@ -43,7 +43,7 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
       imageableId: reviewId,
       imageableType: 'ReviewImages',
       url,
-      preview
+      preview: preview || false
     });
 
     // Return New Image
