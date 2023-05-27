@@ -49,22 +49,14 @@ router.get('/', async (req, res) => {
     }
 
     // Query Filters
-    const where = {};
-      if (minLat || maxLat || minLng || maxLng) {
-          where.lat = {};
-          where.lng = {};
-          if (minLat) where.lat[Op.gte] = minLat;
-          if (maxLat) where.lat[Op.lte] = maxLat;
-          if (minLng) where.lng[Op.gte] = minLng;
-          if (maxLng) where.lng[Op.lte] = maxLng;
-      }
-      if (minPrice || maxPrice) {
-          where.price = {};
-          if (minPrice) where.price[Op.gte] = minPrice;
-          if (maxPrice) where.price[Op.lte] = maxPrice;
-      }
+    minLat = parseFloat(minLat) || -1000;
+    maxLat = parseFloat(maxLat) || 1000;
+    maxLng = parseFloat(maxLng) || 1000;
+    minLng = parseFloat(minLng) || -1000;
+    minPrice = parseFloat(minPrice) || 0;
+    maxPrice = parseFloat(maxPrice) || 1000;
 
-    let avgRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars')), 'avgRating')
+    let avgRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'),'FLOAT'));
 
     const spots = await Spot.findAll({
       include: {
@@ -87,8 +79,13 @@ router.get('/', async (req, res) => {
         'price',
         'createdAt',
         'updatedAt',
-        [avgRating]
+        [avgRating, ]
       ],
+      where: {
+        lat: { [Op.between]: [minLat, maxLat] },
+        lng: { [Op.between]: [minLng, maxLng] },
+        price: { [Op.between]: [minPrice, maxPrice] },
+      },
       group: [
         'Spot.id',
         'Review.id'
