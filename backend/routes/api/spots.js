@@ -4,6 +4,9 @@ const { Op, Sequelize } = require('sequelize');
 const { User, Spot, Review, Image, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
+// Add Query Filters to Get All Spots
+//search filters
+
 // *GET ALL SPOTS*
 router.get('/', async (req, res) => {
     const spots = await Spot.findAll({
@@ -373,5 +376,81 @@ router.get('/:spotId/bookings', async (req, res) => {
 });
 
 //Create a Booking from a Spot based on Spot Id
+router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    const spotId = req.params.spotId;
+    const { startDate, endDate } = req.body;
+
+    // Check if Spot exists
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+      const err = new Error('Spot Not Found');
+      err.status = 404;
+      return next(err);
+    }
+
+    // Check if Spot belongs to Current User
+    if (spot.ownerId === req.user.id) {
+      const err = new Error('Unauthorized User');
+      err.status = 403;
+      return next(err);
+    }
+
+    // Check if Spot is already booked for specified dates
+    const existingBooking = await Booking.findOne({
+      where: {
+        spotId: spot.id,
+        [Op.or]: [
+          {
+            startDate: {
+              [Op.lte]: endDate,
+            },
+            endDate: {
+              [Op.gte]: startDate,
+            },
+          },
+          {
+            startDate: {
+              [Op.between]: [startDate, endDate],
+            },
+          },
+          {
+            endDate: {
+              [Op.between]: [startDate, endDate],
+            },
+          },
+        ],
+      },
+    });
+
+    if (existingBooking) {
+      const err = new Error('Sorry, this spot is already booked for the specified dates');
+      err.status = 403;
+      err.errors = {
+        startDate: 'Start date conflicts with an existing booking',
+        endDate: 'End date conflicts with an existing booking',
+      };
+      return next(err);
+    }
+
+    // Create Booking
+    const booking = await Booking.create({
+      spotId: spot.id,
+      userId: req.user.id,
+      startDate,
+      endDate,
+    });
+
+    // Return New Booking
+    return res.status(200).json({
+      id: booking.id,
+      spotId: booking.spotId,
+      userId: booking.userId,
+      startDate: booking.startDate,
+      endDate: booking.endDate,
+      createdAt: booking.createdAt,
+      updatedAt: booking.updatedAt,
+    });
+
+});
 
 module.exports = router;

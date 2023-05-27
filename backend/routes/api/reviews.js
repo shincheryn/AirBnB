@@ -17,7 +17,7 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
       return next(err);
     }
 
-    // Check if Review belongs to the Current User
+    // Check if Review belongs to Current User
     if (review.userId !== req.user.id) {
       const err = new Error('Unauthorized User');
       err.status = 403;
@@ -50,6 +50,7 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
     return res.json({
       id: newImage.id,
       url: newImage.url,
+      preview: newImage.preview
     });
   });
 
