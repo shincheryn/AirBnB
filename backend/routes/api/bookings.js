@@ -4,7 +4,7 @@ const { Op, Sequelize } = require('sequelize');
 const { User, Spot, Review, Image, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
-//Edit a Booking
+// *EDIT A BOOKING*
 router.put('/:id', requireAuth, async (req, res, next) => {
     const bookingId = req.params.id;
     const { startDate, endDate } = req.body;
@@ -76,7 +76,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
   });
 
 
-//Delete a Booking
+// *DELETE A BOOKING*
 router.delete('/:id', requireAuth, async (req, res, next) => {
     const bookingId = req.params.id;
 
