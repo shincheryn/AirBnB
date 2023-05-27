@@ -70,6 +70,7 @@ router.get('/', async (req, res) => {
       include: {
           model: Review,
           duplicating: false,
+          required: false,
           attributes: [],
       },
       attributes: [
