@@ -87,6 +87,7 @@ router.post('/', async (req, res, next) => {
 
 });
 
+
 // *ADD AN IMAGE TO A SPOT BASED ON SPOT ID*
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const spotId = req.params.spotId;
@@ -217,7 +218,7 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
 });
 
 
-//*Get Details of a Spot from an Id*
+//*GET DETAILS OF A SPOT FROM AN ID*
 router.get('/:id', async (req, res, next) => {
     const spotId = req.params.id;
     const spot = await Spot.findByPk(spotId, {
@@ -294,7 +295,6 @@ router.get('/:id', async (req, res, next) => {
     });
 });
 
-/*---------*/
 
 // *CREATE A REVIEW FOR A SPOT BASED ON THE SPOT'S ID*
 router.post('/:spotId/reviews', async (req, res, next) => {
@@ -332,7 +332,7 @@ router.post('/:spotId/reviews', async (req, res, next) => {
 });
 
 
-// *Get all Bookings for a Spot based on Spot Id*
+// *GET ALL BOOKINGS FOR A SPOT BASED ON SPOT ID*
 router.get('/:spotId/bookings', async (req, res) => {
     const spotId = req.params.spotId;
 

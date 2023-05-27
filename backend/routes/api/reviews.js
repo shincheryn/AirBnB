@@ -54,7 +54,7 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
   });
 
 
-// *Edit a Review*
+// *EDIT A REVIEW*
 router.put('/:id', requireAuth, async (req, res, next) => {
     const reviewId = req.params.id;
     const { review: updatedReview, stars } = req.body;
@@ -89,7 +89,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     return res.json(review);
 });
 
-// *Delete a Review*
+// *DELETE A REVIEW*
 router.delete('/:id', requireAuth, async (req, res, next) => {
     const reviewId = req.params.id;
 

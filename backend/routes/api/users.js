@@ -39,7 +39,7 @@ const validateSignup = [
     handleValidationErrors
   ];
 
-// *Sign Up*
+// *SIGN UP*
 router.post(
     '',
     validateSignup,
@@ -62,7 +62,8 @@ router.post(
     }
   );
 
-  // *Get all Spots owned by the Current User*
+  
+  // *GET ALL SPOTS OWNED BY THE CURRENT USER*
   router.get('/spots', requireAuth, async (req, res) => {
     const userId = req.user.id;
     const spots = await Spot.findAll({
@@ -85,7 +86,8 @@ router.post(
 
   });
 
-// *Get all Reviews of the Current User*
+
+// *GET ALL REVIEWS OF THE CURRENT USER*
 router.get('/reviews', requireAuth, async (req, res) => {
     const userId = req.user.id;
     const reviews = await Review.findAll({
@@ -116,7 +118,8 @@ router.get('/reviews', requireAuth, async (req, res) => {
     return res.json({ Reviews: reviews });
 });
 
-// *Get all Reviews by Spot Id*
+
+// *GET ALL REVIEWS BY SPOT ID*
 router.get('/:spotId/reviews', async (req, res, next) => {
   const spotId = req.params.spotId;
 
@@ -148,7 +151,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 });
 
 
-// *Get all of Current User's Bookings*
+// *GET ALL OF CURRENT USER'S BOOKINGS*
 router.get('/bookings', requireAuth, async (req, res) => {
   const userId = req.user.id;
 
