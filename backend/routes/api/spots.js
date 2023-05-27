@@ -72,7 +72,20 @@ router.get('/', async (req, res) => {
           attributes: [],
       },
       attributes: [
-        avgStarRating
+        'id',
+        'ownerId',
+        'address',
+        'city',
+        'state',
+        'country',
+        'lat',
+        'lng',
+        'name',
+        'description',
+        'price',
+        'createdAt',
+        'updatedAt',
+        [avgStarRating, 'avgStarRating']
       ],
       group: [
         'Spot.id',
