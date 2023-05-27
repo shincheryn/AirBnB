@@ -4,9 +4,66 @@ const { Op, Sequelize } = require('sequelize');
 const { User, Spot, Review, Image, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
-// Add Query Filters to Get All Spots
-// *GET ALL SPOTS*
+// *GET ALL SPOTS & ADD QUERY FILTERS*
 router.get('/', async (req, res) => {
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    //Limit Page and Size
+    if (Number.isNaN(page) || page <= 0 || page > 10) {
+      page = 1;
+    }
+
+    if (Number.isNaN(size) || size <= 0 || size > 20) {
+      size = 20;
+    }
+
+    // Validate Query Parameters
+    const errors = {};
+    if (minLat && isNaN(minLat)) {
+      errors.minLat = 'Minimum latitude is invalid';
+    }
+    if (maxLat && isNaN(maxLat)) {
+      errors.maxLat = 'Maximum latitude is invalid';
+    }
+    if (minLng && isNaN(minLng)) {
+      errors.minLng = 'Minimum longitude is invalid';
+    }
+    if (maxLng && isNaN(maxLng)) {
+      errors.maxLng = 'Maximum longitude is invalid';
+    }
+    if (minPrice && (isNaN(minPrice) || minPrice < 0)) {
+      errors.minPrice = 'Minimum price must be a number greater than or equal to 0';
+    }
+    if (maxPrice && (isNaN(maxPrice) || maxPrice < 0)) {
+      errors.maxPrice = 'Maximum price must be a number greater than or equal to 0';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      const err = new Error ('Bad Request');
+      res.status = 400;
+      err.errors = errors;
+      return next (err);
+    }
+
+    // Query Filters
+    const where = {};
+      if (minLat || maxLat || minLng || maxLng) {
+          where.lat = {};
+          where.lng = {};
+          if (minLat) where.lat[Op.gte] = minLat;
+          if (maxLat) where.lat[Op.lte] = maxLat;
+          if (minLng) where.lng[Op.gte] = minLng;
+          if (maxLng) where.lng[Op.lte] = maxLng;
+      }
+      if (minPrice || maxPrice) {
+          where.price = {};
+          if (minPrice) where.price[Op.gte] = minPrice;
+          if (maxPrice) where.price[Op.lte] = maxPrice;
+      }
+
     const spots = await Spot.findAll({
       include: {
         model: Review,
@@ -14,16 +71,21 @@ router.get('/', async (req, res) => {
       },
       attributes: {
         include: [
-          [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']
-          //numReviews aggregate missing
+          [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
+          [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
         ],
       },
-      group: [
-        'Spot.id',
-        ],
+      where,
+      group: ['Spot.id'],
+      offset: (page - 1) * size,
+      limit: size,
     });
 
-    return res.json({ Spots: spots });
+    return res.json({
+      Spots: spots,
+      page,
+      size,
+    });
 });
 
 
