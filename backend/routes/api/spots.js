@@ -19,7 +19,6 @@ router.get('/', async (req, res) => {
       attributes: {
         include: [
           [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']
-          //missing images
         ],
       },
       group: [
