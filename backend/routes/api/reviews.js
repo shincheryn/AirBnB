@@ -4,7 +4,7 @@ const { Op, Sequelize } = require('sequelize');
 const { User, Spot, Review, Image, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
-// Add an Image to a Review Based on Review's Id
+// *ADD AN IMAGE TO A REVIEW BASED ON REVIEW'S ID*
 router.post('/:id/images', requireAuth, async (req, res, next) => {
     const reviewId = req.params.id;
     const { url, preview } = req.body;
