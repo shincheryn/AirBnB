@@ -64,7 +64,7 @@ router.get('/', async (req, res) => {
           if (maxPrice) where.price[Op.lte] = maxPrice;
       }
 
-    let avgRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars')), 'FLOAT')
+    let avgRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars')), 'avgRating')
 
     const spots = await Spot.findAll({
       include: {
@@ -87,10 +87,11 @@ router.get('/', async (req, res) => {
         'price',
         'createdAt',
         'updatedAt',
-        [avgRating, 'avgRating']
+        [avgRating]
       ],
       group: [
         'Spot.id',
+        'Review.id'
       ],
       offset: (page - 1) * size,
       limit: size,
