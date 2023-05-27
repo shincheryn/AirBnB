@@ -5,20 +5,17 @@ const { User, Spot, Review, Image, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
 // Add Query Filters to Get All Spots
-//search filters
-
 // *GET ALL SPOTS*
 router.get('/', async (req, res) => {
     const spots = await Spot.findAll({
       include: {
         model: Review,
         attributes: [],
-        // required: true,
-        // duplicating: false
       },
       attributes: {
         include: [
           [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']
+          //numReviews aggregate missing
         ],
       },
       group: [
@@ -239,8 +236,6 @@ router.get('/:id', async (req, res, next) => {
         {
           model: Review,
           attributes: [],
-          required: true,
-          duplicating: false
         }
       ],
       attributes: {

@@ -7,8 +7,8 @@ const { requireAuth } = require('../../utils/auth');
 //Delete a Spot/Review Image (Polymorphic)
 router.delete('/:id', requireAuth, async (req, res, next) => {
     const imageId = req.params.id;
-    const imageableType = image.imageableType;
-    const imageableId = image.imageableId;
+    const imageableType = imageId.imageableType;
+    const imageableId = imageId.imageableId;
 
     // Check if Image Exists
     const generalImage = await Image.findByPk(imageId);
