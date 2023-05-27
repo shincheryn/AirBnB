@@ -72,27 +72,12 @@ router.get('/', async (req, res) => {
 
       attributes: {
         include: [
-          'id',
-          'ownerId',
-          'address',
-          'city',
-          'state',
-          'country',
-          'lat',
-          'lng',
-          'name',
-          'description',
-          'price',
-          'createdAt',
-          'updatedAt',
           [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
           [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
         ],
       },
-      where,
       group: [
         'Spot.id',
-        'Owner.id'
       ],
       offset: (page - 1) * size,
       limit: size,
@@ -100,8 +85,6 @@ router.get('/', async (req, res) => {
 
     return res.json({
       Spots: spots,
-      numReviews: spots.getDataValue('numReviews'),
-      avgStarRating: spots.getDataValue('avgRating'),
       page,
       size,
     });
