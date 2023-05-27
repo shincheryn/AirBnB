@@ -59,12 +59,26 @@ router.get('/', async (req, res) => {
     let avgRating = Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('Reviews.stars'),'FLOAT'));
 
     const spots = await Spot.findAll({
-      include: {
-          model: Review,
-          duplicating: false,
-          required: false,
-          attributes: [],
+      group: [
+        'Spot.id',
+      ],
+
+      where: {
+        lat: { [Op.between]: [minLat, maxLat] },
+        lng: { [Op.between]: [minLng, maxLng] },
+        price: { [Op.between]: [minPrice, maxPrice] },
       },
+
+      offset: (page - 1) * size,
+      limit: size,
+
+      include: {
+        model: Review,
+        duplicating: false,
+        required: false,
+        attributes: [],
+      },
+
       attributes: [
         'id',
         'ownerId',
@@ -81,17 +95,6 @@ router.get('/', async (req, res) => {
         'updatedAt',
         [avgRating, 'avgRating']
       ],
-      where: {
-        lat: { [Op.between]: [minLat, maxLat] },
-        lng: { [Op.between]: [minLng, maxLng] },
-        price: { [Op.between]: [minPrice, maxPrice] },
-      },
-      group: [
-        'Spot.id',
-        'Review.id'
-      ],
-      offset: (page - 1) * size,
-      limit: size,
     });
 
     return res.json({
