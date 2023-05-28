@@ -13,15 +13,15 @@ module.exports = (sequelize, DataTypes) => {
         scope: {
           imageableType: 'Review'
         },
-        as: 'ReviewImages'
+        as: 'ReviewImages',
       });
 
       // One-to-many association with Spot
       Image.belongsTo(models.Spot, {
-        foreignKey: 'id',
+        foreignKey: 'imageableId',
         constraints: false,
         scope: {
-          id: 'Spot'
+          imageableType: 'Spot'
         },
         as: 'SpotImages'
       });

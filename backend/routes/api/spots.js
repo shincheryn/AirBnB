@@ -188,13 +188,13 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     // Create Image
     const newImage = await Image.create({
-      imageableId: spot.id,
+      imageableId: spotId,
       imageableType: 'SpotImages',
       url,
       preview
     });
 
-    return res.json({id: spot.id, url: newImage.url, preview: newImage.preview });
+    return res.json({id: newImage.id, url: newImage.url, preview: newImage.preview });
 
 });
 
@@ -309,7 +309,7 @@ router.get('/:id', async (req, res, next) => {
         {
           model: Image,
           as: 'SpotImages',
-          attributes: ['url', 'preview'],
+          attributes: ['id', 'url', 'preview'],
         },
         {
           model: Review,
@@ -342,6 +342,14 @@ router.get('/:id', async (req, res, next) => {
       ],
     });
 
+    //Gets All Spot Images
+    spot.SpotImages = await Image.findAll({
+      where: {
+        imageableId: spotId
+      },
+      attributes: ['id', 'url', 'preview']
+    });
+
     //If Spot Not Found
     if (!spot) {
       const err = new Error('Spot Not Found');
@@ -366,7 +374,7 @@ router.get('/:id', async (req, res, next) => {
       updatedAt: spot.updatedAt,
       numReviews: spot.getDataValue('numReviews'),
       avgStarRating: spot.getDataValue('avgRating'),
-      SpotImages: spot.SpotImages,
+      SpotImages: spot.SpotImages, //showing empty array
       Owner: spot.Owner,
     });
 });

@@ -4,9 +4,11 @@ const { Op, Sequelize } = require('sequelize');
 const { User, Spot, Review, Image, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
+
 //Delete a Spot/Review Image (Polymorphic)
 router.delete('/:id', requireAuth, async (req, res, next) => {
     const imageId = req.params.id;
+    const ownerId = req.user.id;
 
     // Check if Image Exists
     const image = await Image.findByPk(imageId);
@@ -17,23 +19,34 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
         return next(err);
     }
 
-    //Check Imageable Type
-    let imageType;
-    if (image.imageableType === 'Spot') {
-        imageType = Spot;
-    } else if (image.imageableType === 'Review') {
-        imageType = Review;
-    }
+    // Check Imageable Type, Find Images from Each Table, Check If Spot Id is Correct Imageable Id
+    let boolean = false;
+    if (image.imageableType === 'SpotImages') {
+        const spots = await Spot.findAll({ where: {ownerId} });
 
-    // Check Image belongs to Current User
-    const table = await imageType.findByPk(image.imageableId);
-    if (!table || table.ownerId !== req.user.id) {
+        for (let i = 0; i < spots.length; i++) {
+            if (spots[i].id === image.imageableId) {
+                boolean = true;
+            }
+        }
+
+    } else if (image.imageableType === 'ReviewImages') {
+        const reviews = await Review.findAll({ where: {userId: ownerId}});
+
+        for (let i = 0; i < reviews.length; i++) {
+            if (reviews[i].id === image.imageableId) {
+                boolean = true;
+            }
+        }
+    }
+    
+    if (!boolean) {
         const err = new Error('Unauthorized User');
         err.status = 403;
         return next(err);
     }
 
-    // Delete Image
+    //Delete Image
     await image.destroy();
 
     return res.status(200).json({ message: 'Successfully deleted' });
