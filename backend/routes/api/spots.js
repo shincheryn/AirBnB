@@ -43,9 +43,9 @@ router.get('/', async (req, res) => {
 
     if (Object.keys(errors).length > 0) {
       const err = new Error ('Bad Request');
-      res.status = 400;
+      err.status = 400;
       err.errors = errors;
-      return next (err);
+      return next(err);
     }
 
     // Query Filters
