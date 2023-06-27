@@ -1,0 +1,39 @@
+/* frontend/src/components/SignupFormPage/SignupForm.css */
+
+/* Signup form container */
+.signup-form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+  /* Form inputs */
+  .signup-form-container input[type="text"],
+  .signup-form-container input[type="password"],
+  .signup-form-container input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  /* Form submit button */
+  .signup-form-container button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Error messages */
+  .signup-form-container .error-message {
+    color: red;
+    margin-top: 5px;
+  }
