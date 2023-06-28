@@ -1,12 +1,12 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.0",
     "bcryptjs": "^2.4.3"
   },
   "name": "airbnb",
   "description": "## Database Schema Design",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "install": "npm --prefix backend install backend",
     "dev:backend": "npm install --prefix backend start",
