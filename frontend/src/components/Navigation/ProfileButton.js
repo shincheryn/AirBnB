@@ -28,6 +28,6 @@ function ProfileButton({ user }) {
       </ul>
     </>
   );
-}
+}ProfileButton component
 
 export default ProfileButton;
