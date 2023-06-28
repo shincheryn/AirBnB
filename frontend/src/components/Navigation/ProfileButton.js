@@ -1,14 +1,32 @@
 // frontend/src/components/Navigation/ProfileButton.js
-import React from 'react';
+import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
+import * as sessionActions from '../../store/session';
 
 function ProfileButton({ user }) {
+  const dispatch = useDispatch();
+
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(sessionActions.logout());
+  };
+
+  const ulClassName = "profile-dropdown";
+
   return (
-    <div>
-      {/* Add your desired Font Awesome user icon */}
-      <i className="fas fa-user"></i>
-      {/* You can also include the user's name */}
-      <span>{user.username}</span>
-    </div>
+    <>
+      <button>
+        <i className="fas fa-user-circle" />
+      </button>
+      <ul className="profile-dropdown">
+        <li>{user.username}</li>
+        <li>{user.firstName} {user.lastName}</li>
+        <li>{user.email}</li>
+        <li>
+          <button onClick={logout}>Log Out</button>
+        </li>
+      </ul>
+    </>
   );
 }
 
