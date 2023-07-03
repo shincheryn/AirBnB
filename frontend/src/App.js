@@ -6,6 +6,8 @@ import SignupFormPage from "./components/SignupFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import { ModalProvider } from "./context/Modal";
+import spotsReducer from "./store/spots";
+import LandingPage from "./components/LandingPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,10 +27,12 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
+          <Route path = "/"><LandingPage /></Route>
         </Switch>
       )}
     </ModalProvider>
   );
 }
+
 
 export default App;

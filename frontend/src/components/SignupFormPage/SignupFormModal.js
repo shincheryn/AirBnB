@@ -1,5 +1,5 @@
 import React from 'react';
-import SignupFormPage from './SignupFormPage';
+import SignupFormPage from '.';
 
 const SignupFormModal = ({ closeModal }) => {
 

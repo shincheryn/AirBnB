@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginFormPage from './LoginFormPage';
+import LoginFormPage from '.';
 
 const LoginFormModal = ({ closeModal }) => {
 
