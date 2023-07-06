@@ -1,0 +1,61 @@
+/* spots.css */
+
+.spot-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .spot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .spot:hover {
+    background-color: #f2f2f2;
+  }
+
+  .spot-image {
+    width: 150px;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+  }
+
+  .spot-details {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .spot-location {
+    font-weight: bold;
+  }
+
+  .spot-rating {
+    display: flex;
+    align-items: center;
+  }
+
+  .star-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+
+  .spot-price {
+    font-weight: bold;
+  }

@@ -41,6 +41,7 @@ const initialState = {
   detail: {},
   all: {},
 };
+//get rid of this and make state = initialState an empty array
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
