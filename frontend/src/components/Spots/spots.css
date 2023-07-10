@@ -1,61 +1,82 @@
 /* spots.css */
 
 .spot-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
 
-  .spot {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 300px;
-    border: 1px solid black;
-    margin: 10px;
-    padding: 10px;
-    cursor: pointer;
-    position: relative;
-  }
+.spot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  border: 1px solid black;
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+}
 
-  .spot:hover {
-    background-color: #f2f2f2;
-  }
+.spot:hover {
+  background-color: #f2f2f2;
+}
 
-  .spot-image {
-    width: 150px;
-    height: 150px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin-bottom: 10px;
-  }
+.spot-image {
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
 
-  .spot-details {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.spot-details {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
-  .spot-location {
-    font-weight: bold;
-  }
+.spot-location {
+  font-weight: bold;
+}
 
-  .spot-rating {
-    display: flex;
-    align-items: center;
-  }
+.spot-rating {
+  display: flex;
+  align-items: center;
+}
 
-  .star-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-  }
+.star-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
 
-  .spot-price {
-    font-weight: bold;
-  }
+.spot-price {
+  font-weight: bold;
+}
+
+/* Tooltip */
+.spot::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.spot:hover::after {
+  opacity: 1;
+}

@@ -1,35 +1,31 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getSpotDetail } from './store/spots';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSpotDetail } from '../../store/spots';
+import './SpotDetail.css';
 
-function SpotDetails() {
+function SpotDetail() {
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const { spotId } = useParams();
-  const spot = useSelector(selectSpotById(spotId));
+  const spot = useSelector((state) => state.spots.detail);
 
   useEffect(() => {
-    dispatch(getSpotDetail(spotId));
-  }, [dispatch, spotId]);
-
-  if (!spot) {
-    return <div>Loading spot details...</div>;
-  }
+    dispatch(getSpotDetail(id));
+  }, [dispatch, id]);
 
   return (
-    <div className="spot-details">
-      <h2>{spot.name}</h2>
-      <div>
-        <img src={spot.thumbnail} alt={spot.name} className="spot-thumbnail" />
-        <div>
-          <p>{spot.city}, {spot.state}</p>
-          <p>Rating: {spot.rating || 'New'}</p>
-          <p>Price per night: ${spot.price.toFixed(2)}</p>
+    <div className="spot-detail">
+      <h1>{spot.name}</h1>
+      <p>{spot.description}</p>
+      <div className="spot-details">
+        <div className="spot-location">
+          Location: {spot.city}, {spot.state}, {spot.country}
         </div>
+        <div className="spot-rating">Rating: {spot.avgRating !== null ? spot.avgRating : 'Not rated'}</div>
+        <div className="spot-price">${spot.price} / night</div>
       </div>
-
     </div>
   );
 }
 
-export default SpotDetails;
+export default SpotDetail;
