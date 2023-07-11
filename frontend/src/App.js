@@ -1,21 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
-import LoginFormPage from "./components/LoginFormPage";
-import SignupFormPage from "./components/SignupFormPage";
-import * as sessionActions from "./store/session";
-import Navigation from "./components/Navigation";
-import { ModalProvider } from "./context/Modal";
-import LandingPage from "./components/LandingPage";
-import Spots from "./components/Spots/index";
-import SpotDetail from "./components/SpotDetail/index";
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import LoginFormPage from './components/LoginFormPage';
+import SignupFormPage from './components/SignupFormPage';
+import * as sessionActions from './store/session';
+import Navigation from './components/Navigation';
+import { ModalProvider } from './context/Modal';
+import LandingPage from './components/LandingPage';
+import Spots from './components/Spots/index';
+import SpotDetail from './components/SpotDetail/index';
+import CreateSpotForm from './components/CreateSpotForm/index';
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
+    dispatch(sessionActions.restoreUser())
+      .then(() => setIsLoaded(true))
+      .catch(console.error); // Fix: Add error handling for failed user restoration
   }, [dispatch]);
 
   return (
@@ -30,12 +33,15 @@ function App() {
             <Route path="/signup">
               <SignupFormPage />
             </Route>
-            <Route exact path="/">
-              <LandingPage />
-              <Spots />
+            <Route path="/spots/new">
+              <CreateSpotForm />
             </Route>
             <Route path="/spots/:id">
               <SpotDetail />
+            </Route>
+            <Route exact path="/">
+              <LandingPage />
+              <Spots />
             </Route>
           </Switch>
         )}

@@ -18,28 +18,33 @@ function SignupFormPage() {
 
   if (sessionUser) return <Redirect to="/" />;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
-      return dispatch(
-        sessionActions.signup({
-          email,
-          username,
-          firstName,
-          lastName,
-          password,
-        })
-      ).catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
-        }
+      if (password.length < 6) {
+        setErrors({
+          password: "Password must be 6 characters or more",
+        });
+        return;
+      }
+      const user = {
+        email,
+        username,
+        firstName,
+        lastName,
+        password,
+      };
+      const res = await dispatch(sessionActions.signup(user));
+      const data = await res.json();
+      if (data.errors) {
+        setErrors(data.errors);
+      }
+    } else {
+      setErrors({
+        confirmPassword: "Confirm Password field must be the same as the Password field",
       });
     }
-    return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
-    });
   };
 
   return (

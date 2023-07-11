@@ -6,8 +6,9 @@ import './spots.css';
 
 function Spots() {
   const dispatch = useDispatch();
-  const spots = useSelector((state) => state.spots.all);
+  let spots = useSelector((state) => state.spots);
   const history = useHistory();
+  spots = Object.entries(spots).filter(([key]) => key !== 'detail');
 
   useEffect(() => {
     dispatch(fetchSpots());
@@ -20,23 +21,30 @@ function Spots() {
   return (
     <div>
       <div className="spot-list">
-        {spots.map((spot) => (
+        {spots.map(([key, spot]) => (
           <div
-            key={spot.id}
+            key={spot?.id}
             className="spot"
-            data-tooltip={spot.name}
-            onClick={() => handleSpotClick(spot.id)}
+            data-tooltip={spot?.name}
+            onClick={() => handleSpotClick(spot?.id)}
           >
             <div
               className="spot-image"
-              style={{ backgroundImage: `url(${spot.image})` }}
+              style={{ backgroundImage: `url(${spot?.image})` }}
             ></div>
             <div className="spot-details">
-              <div className="spot-location">{`${spot.city}, ${spot.state}`}</div>
+              <div className="spot-location">{`${spot?.city}, ${spot?.state}`}</div>
               <div className="spot-rating">
-                {spot.avgRating !== null ? spot.avgRating : 'NEW'}
+                {spot?.avgRating !== null ? (
+                  <>
+                    <i className="fa-solid fa-star star-icon"></i>
+                    {spot?.avgRating.toFixed(1)}
+                  </>
+                ) : (
+                  <span>NEW</span>
+                )}
               </div>
-              <div className="spot-price">${spot.price} / night</div>
+              <div className="spot-price">${spot?.price} / night</div>
             </div>
           </div>
         ))}

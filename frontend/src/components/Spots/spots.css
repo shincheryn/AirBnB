@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: center;
   height: 300px;
-  border: 1px solid black;
+  border: 1px solid black; /* delete later after image */
   margin: 10px;
   padding: 10px;
   cursor: pointer;

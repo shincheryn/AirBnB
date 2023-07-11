@@ -13,16 +13,48 @@ function SpotDetail() {
     dispatch(getSpotDetail(id));
   }, [dispatch, id]);
 
+  const handleReserveClick = () => {
+    alert('Feature coming soon');
+  };
+
   return (
     <div className="spot-detail">
-      <h1>{spot.name}</h1>
-      <p>{spot.description}</p>
-      <div className="spot-details">
+      <h1>{spot?.name}</h1>
+      <div className="spot-info">
         <div className="spot-location">
-          Location: {spot.city}, {spot.state}, {spot.country}
+          Location: {spot?.city}, {spot?.state}, {spot?.country}
         </div>
-        <div className="spot-rating">Rating: {spot.avgRating !== null ? spot.avgRating : 'Not rated'}</div>
-        <div className="spot-price">${spot.price} / night</div>
+        <div className="spot-images">
+          <div className="spot-image-lg"></div>
+          <div className="spot-image-container">
+            <div className="spot-image-sm"></div>
+            <div className="spot-image-sm"></div>
+            <div className="spot-image-sm"></div>
+            <div className="spot-image-sm"></div>
+          </div>
+        </div>
+        <div className="spot-host">
+          Hosted by {spot?.firstName} {spot?.lastName}
+        </div>
+        <p className="spot-description">{spot?.description}</p>
+        <div className="spot-callout">
+          <div className="spot-callout-price">
+            ${spot?.price} / night
+          </div>
+          <div className="spot-callout-rating">
+          <i class="fa-solid fa-star"></i>
+            Rating: {spot?.avgRating !== null ? spot?.avgRating : 'Not rated'}
+          </div>
+          <div className="spot-callout-reviews">
+            Reviews: {spot?.reviewCount || 0}
+          </div>
+          <button
+            className="reserve-button"
+            onClick={handleReserveClick}
+          >
+            Reserve
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -35,23 +35,31 @@ export const fetchSpots = () => async (dispatch) => {
   return res;
 };
 
-const initialState = {
-  detail: {},
-  all: [],
+export const createSpot = (spotData) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/spots', {
+      method: 'POST',
+      body: JSON.stringify(spotData),
+    });
+    if (!response.ok) {
+      throw new Error('Spot creation failed');
+    }
+    const spot = await response.json();
+    return spot;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const spotsReducer = (state = initialState, action) => {
+const spotsReducer = (state = {}, action) => {
+  const newState = {...state}
   switch (action.type) {
     case GET_SPOT_DETAIL:
-      return {
-        ...state,
-        detail: action.spot,
-      };
+      newState.detail = action.spot
+      return newState;
     case ALL_SPOTS:
-      return {
-        ...state,
-        all: action.spots,
-      };
+      action.spots.forEach(spot => newState[spot.id] = spot)
+      return newState;
     default:
       return state;
   }

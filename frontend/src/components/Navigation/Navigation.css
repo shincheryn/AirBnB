@@ -1,5 +1,3 @@
-/* frontend/src/components/Navigation/Navigation.css */
-
 ul {
   list-style: none;
   display: flex;
@@ -11,6 +9,22 @@ ul {
 
 li {
   margin-right: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo i {
+  margin-right: 5px;
+}
+
+.logo a {
+  display: flex;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
 }
 
 /* "Home" */
@@ -32,7 +46,7 @@ button {
 
 .profile-dropdown {
   position: absolute;
-  top: 100px; /* Adjust the positioning as needed */
+  top: 100px;
   right: 0;
   border: 1px solid black;
   border-radius: 4px;
