@@ -17,7 +17,7 @@ li {
 }
 
 .logo i {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .logo a {
@@ -46,11 +46,37 @@ button {
 
 .profile-dropdown {
   position: absolute;
-  top: 100px;
+  top: 10%;
   right: 0;
-  border: 1px solid black;
+  z-index: 1;
+  width: 200px;
+  background-color: #fff;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 10px;
+  padding: 8px;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-dropdown li {
+  margin-bottom: 8px;
+}
+
+.profile-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-dropdown button:hover {
+  background-color: #f5f5f5;
 }
 
 .profile-dropdown.hidden {

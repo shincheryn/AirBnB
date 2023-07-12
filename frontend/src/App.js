@@ -10,6 +10,7 @@ import LandingPage from './components/LandingPage';
 import Spots from './components/Spots/index';
 import SpotDetail from './components/SpotDetail/index';
 import CreateSpotForm from './components/CreateSpotForm/index';
+import ManageSpots from './components/ManageSpots/index';
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ function App() {
   useEffect(() => {
     dispatch(sessionActions.restoreUser())
       .then(() => setIsLoaded(true))
-      .catch(console.error); // Fix: Add error handling for failed user restoration
+      .catch(console.error);
   }, [dispatch]);
 
   return (
@@ -35,6 +36,9 @@ function App() {
             </Route>
             <Route path="/spots/new">
               <CreateSpotForm />
+            </Route>
+            <Route path="/spots/manage">
+              <ManageSpots />
             </Route>
             <Route path="/spots/:id">
               <SpotDetail />

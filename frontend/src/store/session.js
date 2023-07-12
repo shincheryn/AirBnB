@@ -8,7 +8,6 @@ const setUser = (user) => {
   if (user) {
     return {
       type: SET_USER,
-      payload: {
         user: {
           id: user.id,
           email: user.email,
@@ -17,15 +16,12 @@ const setUser = (user) => {
           lastName: user.lastName,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
-        },
-      },
+        }
     };
   } else {
     return {
       type: SET_USER,
-      payload: {
-        user: null,
-      },
+      user: null,
     };
   };
   }
@@ -37,7 +33,7 @@ const removeUser = () => {
   };
 };
 
-const initialState = { user: null };
+// const initialState = { user: null };
 
 //Sign Up
 export const signup = (user) => async (dispatch) => {
@@ -92,13 +88,13 @@ export const restoreUser = () => async (dispatch) => {
 };
 
 //Session Reducer
-const sessionReducer = (state = initialState, action) => {
+const sessionReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
     case SET_USER:
       newState = {
         ...state,
-        user: action.payload.user,
+        user: action.user,
       };
       return newState;
     case REMOVE_USER:

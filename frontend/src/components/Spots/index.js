@@ -35,7 +35,7 @@ function Spots() {
             <div className="spot-details">
               <div className="spot-location">{`${spot?.city}, ${spot?.state}`}</div>
               <div className="spot-rating">
-                {spot?.avgRating !== null ? (
+                {spot?.avgRating !== undefined && spot?.avgRating !== null ? (
                   <>
                     <i className="fa-solid fa-star star-icon"></i>
                     {spot?.avgRating.toFixed(1)}

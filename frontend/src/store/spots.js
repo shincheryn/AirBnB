@@ -1,9 +1,9 @@
-// spotsReducer.js
 import { csrfFetch } from './csrf';
 
 // Action Types
 const GET_SPOT_DETAIL = 'spots/getSpotDetail';
 const ALL_SPOTS = 'spots/allSpots';
+const MY_SPOTS = 'spots/mySpots';
 
 // Action Creators
 const spotDetail = (spot) => ({
@@ -13,6 +13,11 @@ const spotDetail = (spot) => ({
 
 const allSpots = (spots) => ({
   type: ALL_SPOTS,
+  spots,
+});
+
+const mySpots = (spots) => ({
+  type: MY_SPOTS,
   spots,
 });
 
@@ -35,6 +40,15 @@ export const fetchSpots = () => async (dispatch) => {
   return res;
 };
 
+export const fetchMySpots = () => async (dispatch) => {
+  const res = await csrfFetch('/api/users/spots', {
+    method: 'GET',
+  });
+  const data = await res.json();
+  dispatch(mySpots(data.Spots));
+  return res;
+};
+
 export const createSpot = (spotData) => async (dispatch) => {
   try {
     const response = await csrfFetch('/api/spots', {
@@ -51,14 +65,25 @@ export const createSpot = (spotData) => async (dispatch) => {
   }
 };
 
+//Spots Reducer
 const spotsReducer = (state = {}, action) => {
-  const newState = {...state}
+  const newState = { ...state };
   switch (action.type) {
     case GET_SPOT_DETAIL:
-      newState.detail = action.spot
+      newState[action.spot.id] = action.spot;
       return newState;
+
     case ALL_SPOTS:
-      action.spots.forEach(spot => newState[spot.id] = spot)
+      action.spots.forEach((spot) => {
+        newState[spot.id] = spot;
+      });
+      return newState;
+
+    case MY_SPOTS:
+      newState.mySpots = {};
+      action.spots.forEach((spot) => {
+        newState.mySpots[spot.id] = spot;
+      });
       return newState;
     default:
       return state;

@@ -124,12 +124,12 @@ router.post('/', async (req, res, next) => {
     if (typeof country !== 'string') {
       errors.country = 'Country is required';
     }
-    if (typeof lat !== 'number') {
-      errors.lat = 'Latitude is required';
-    }
-    if (typeof lng !== 'number') {
-      errors.lng = 'Longitude is required';
-    }
+    // if (typeof lat !== 'number') {
+    //   errors.lat = 'Latitude is required';
+    // }
+    // if (typeof lng !== 'number') {
+    //   errors.lng = 'Longitude is required';
+    // }
     if (typeof name !== 'string') {
       errors.name = 'Name is required';
     }
@@ -154,8 +154,8 @@ router.post('/', async (req, res, next) => {
       city,
       state,
       country,
-      lat: parseFloat(lat),
-      lng: parseFloat(lng),
+      // lat: parseFloat(lat),
+      // lng: parseFloat(lng),
       name,
       description,
       price: parseFloat(price)

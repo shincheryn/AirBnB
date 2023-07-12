@@ -2,15 +2,25 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpotDetail } from '../../store/spots';
+import { fetchReviews } from '../../store/reviews';
 import './SpotDetail.css';
 
 function SpotDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const spot = useSelector((state) => state.spots.detail);
+  const spot = useSelector((state) => state.spots[id]);
+  const reviews = useSelector((state) =>
+    Object.values(state.reviews).filter((review) => review.spotId === parseInt(id))
+  );
+  const totalReviews = reviews.length;
+  const averageRating =
+    totalReviews > 0
+      ? reviews.reduce((sum, review) => sum + review.stars, 0) / totalReviews
+      : 0;
 
   useEffect(() => {
     dispatch(getSpotDetail(id));
+    dispatch(fetchReviews(id));
   }, [dispatch, id]);
 
   const handleReserveClick = () => {
@@ -25,35 +35,45 @@ function SpotDetail() {
           Location: {spot?.city}, {spot?.state}, {spot?.country}
         </div>
         <div className="spot-images">
-          <div className="spot-image-lg"></div>
-          <div className="spot-image-container">
-            <div className="spot-image-sm"></div>
-            <div className="spot-image-sm"></div>
-            <div className="spot-image-sm"></div>
-            <div className="spot-image-sm"></div>
+          <div className="spot-image-lg">
+          {spot?.Image}
           </div>
         </div>
         <div className="spot-host">
-          Hosted by {spot?.firstName} {spot?.lastName}
+          Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}
         </div>
         <p className="spot-description">{spot?.description}</p>
         <div className="spot-callout">
-          <div className="spot-callout-price">
-            ${spot?.price} / night
-          </div>
+          <div className="spot-callout-price">${spot?.price} / night</div>
           <div className="spot-callout-rating">
-          <i class="fa-solid fa-star"></i>
-            Rating: {spot?.avgRating !== null ? spot?.avgRating : 'Not rated'}
+            <i className="fa-solid fa-star"></i> Rating: {averageRating.toFixed(2)}
           </div>
-          <div className="spot-callout-reviews">
-            Reviews: {spot?.reviewCount || 0}
-          </div>
-          <button
-            className="reserve-button"
-            onClick={handleReserveClick}
-          >
+          <div className="spot-callout-reviews">Reviews: {totalReviews}</div>
+          <button className="reserve-button" onClick={handleReserveClick}>
             Reserve
           </button>
+        </div>
+
+        <div className="reviews-container">
+          <h2>Reviews</h2>
+          {reviews.length === 0 ? (
+            <p>Be the first to post a review!</p>
+          ) : (
+            reviews.map((review) => (
+              <div key={review?.id} className="review">
+                <p>
+                  {review?.user && review.user?.firstName ? review.user.firstName : 'User'},{' '}
+                  {review?.createdAt
+                    ? new Date(review?.createdAt).toLocaleDateString('en-US', {
+                        month: 'long',
+                        year: 'numeric',
+                      })
+                    : ''}
+                </p>
+                <p>{review?.review}</p>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
