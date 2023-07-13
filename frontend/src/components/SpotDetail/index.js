@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpotDetail } from '../../store/spots';
-import { fetchReviews } from '../../store/reviews';
+import { fetchReviews, deleteReview, createReview } from '../../store/reviews';
+import { ModalContext } from '../../context/Modal';
+import CreateReviewModal from '../CreateReviewModal';
 import './SpotDetail.css';
 
 function SpotDetail() {
@@ -18,6 +20,9 @@ function SpotDetail() {
       ? reviews.reduce((sum, review) => sum + review.stars, 0) / totalReviews
       : 0;
 
+  const { setModalContent } = React.useContext(ModalContext);
+  const currentUser = useSelector((state) => state.session.user);
+
   useEffect(() => {
     dispatch(getSpotDetail(id));
     dispatch(fetchReviews(id));
@@ -27,17 +32,42 @@ function SpotDetail() {
     alert('Feature coming soon');
   };
 
+  const handlePostReview = () => {
+    setModalContent(
+      <CreateReviewModal
+        closeModal={closeModal}
+        spotId={id}
+        onSubmit={(reviewData) => {
+          dispatch(createReview(reviewData));
+          closeModal();
+        }}
+      />
+    );
+  };
+
+  const handleDeleteReview = (reviewId) => {
+    dispatch(deleteReview(reviewId));
+  };
+
+  const closeModal = () => {
+    setModalContent(null);
+  };
+
+  if (!spot) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="spot-detail">
-      <h1>{spot?.name}</h1>
+      <h1>{spot.name}</h1>
       <div className="spot-info">
         <div className="spot-location">
           Location: {spot?.city}, {spot?.state}, {spot?.country}
         </div>
         <div className="spot-images">
-          <div className="spot-image-lg">
-          {spot?.Image}
-          </div>
+          {spot?.SpotImages && spot?.SpotImages.map((image) => (
+            <img key={image?.id} src={image?.url} alt="Spot" className="spot-image-lg" />
+          ))}
         </div>
         <div className="spot-host">
           Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}
@@ -54,6 +84,7 @@ function SpotDetail() {
           </button>
         </div>
 
+
         <div className="reviews-container">
           <h2>Reviews</h2>
           {reviews.length === 0 ? (
@@ -62,17 +93,30 @@ function SpotDetail() {
             reviews.map((review) => (
               <div key={review?.id} className="review">
                 <p>
-                  {review?.user && review.user?.firstName ? review.user.firstName : 'User'},{' '}
-                  {review?.createdAt
-                    ? new Date(review?.createdAt).toLocaleDateString('en-US', {
+                  {review?.User?.firstName ?? 'User'},{' '}
+                  {review.updatedAt
+                    ? new Date(review.updatedAt).toLocaleDateString('en-US', {
                         month: 'long',
                         year: 'numeric',
                       })
                     : ''}
                 </p>
                 <p>{review?.review}</p>
+                {review?.User?.id === currentUser.id && (
+                  <button
+                    className="delete-review-button"
+                    onClick={() => handleDeleteReview(review.id)}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             ))
+          )}
+        </div>
+        <div className="post-review-button">
+          {!reviews.some((review) => review?.User.id === currentUser.id) && (
+            <button onClick={handlePostReview}>Post Your Review</button>
           )}
         </div>
       </div>
