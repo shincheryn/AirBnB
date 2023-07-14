@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createReview } from '../../store/reviews';
-
+import './CreateReviewForm.css';
 
 const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
   const dispatch = useDispatch();
 
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async () => {
     // Validate form inputs
-    if (comment.length < 10 || rating === 0) {
-      setError('Please provide a comment and rating.');
+    const validationErrors = {};
+    if (comment.length < 10) {
+      validationErrors.comment = 'Comment must be at least 10 characters long';
+    }
+    if (rating === 0) {
+      validationErrors.rating = 'Please select a rating';
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -29,23 +37,24 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
       // Reset form inputs
       setComment('');
       setRating(0);
-      setError('');
+      setErrors({});
       // Call the onSubmit callback
       onSubmit(newReview);
     } catch (err) {
-      setError('Failed to submit the review. Please try again.');
+      setErrors({ server: 'Failed to submit the review. Please try again.' });
     }
   };
 
   return (
     <div className="create-review-modal">
       <h3>How was your stay?</h3>
-      {error && <div className="error">{error}</div>}
+      {errors.server && <div className="error">{errors.server}</div>}
       <textarea
         placeholder="Leave your review here..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       ></textarea>
+      {errors.comment && <div className="error">{errors.comment}</div>}
       <label>Stars</label>
       <input
         type="number"
@@ -54,7 +63,8 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
         value={rating}
         onChange={(e) => setRating(Number(e.target.value))}
       />
-      <button disabled={comment.length < 10 || rating === 0} onClick={handleSubmit}>
+      {errors.rating && <div className="error">{errors.rating}</div>}
+      <button onClick={handleSubmit}>
         Submit Your Review
       </button>
       <button onClick={closeModal}>Cancel</button>

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpotDetail } from '../../store/spots';
-import { fetchReviews, deleteReview, createReview } from '../../store/reviews';
+import { fetchReviews, deleteReview, createReview, clearReviews } from '../../store/reviews';
 import { ModalContext } from '../../context/Modal';
 import CreateReviewModal from '../CreateReviewModal';
 import './SpotDetail.css';
@@ -22,10 +22,20 @@ function SpotDetail() {
 
   const { setModalContent } = React.useContext(ModalContext);
   const currentUser = useSelector((state) => state.session.user);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [serverError, setServerError] = useState('');
+
+  const closeModal = useCallback(() => {
+    setModalContent();
+  }, [setModalContent]);
 
   useEffect(() => {
     dispatch(getSpotDetail(id));
     dispatch(fetchReviews(id));
+
+    return () => {
+      dispatch(clearReviews());
+    };
   }, [dispatch, id]);
 
   const handleReserveClick = () => {
@@ -33,24 +43,29 @@ function SpotDetail() {
   };
 
   const handlePostReview = () => {
-    setModalContent(
-      <CreateReviewModal
-        closeModal={closeModal}
-        spotId={id}
-        onSubmit={(reviewData) => {
-          dispatch(createReview(reviewData));
-          closeModal();
-        }}
-      />
-    );
+    setIsReviewModalOpen(true);
   };
+
+  const handleReviewSubmit = useCallback(
+    async (reviewData) => {
+      try {
+        const response = await dispatch(createReview(reviewData));
+
+        if (response.error) {
+          setServerError('Failed to submit the review. Please try again.');
+          return;
+        }
+
+        closeModal();
+      } catch (error) {
+        setServerError('Failed to submit the review. Please try again.');
+      }
+    },
+    [dispatch, closeModal]
+  );
 
   const handleDeleteReview = (reviewId) => {
     dispatch(deleteReview(reviewId));
-  };
-
-  const closeModal = () => {
-    setModalContent(null);
   };
 
   if (!spot) {
@@ -60,14 +75,16 @@ function SpotDetail() {
   return (
     <div className="spot-detail">
       <h1>{spot.name}</h1>
+      {serverError && <div className="error">{serverError}</div>}
       <div className="spot-info">
         <div className="spot-location">
           Location: {spot?.city}, {spot?.state}, {spot?.country}
         </div>
         <div className="spot-images">
-          {spot?.SpotImages && spot?.SpotImages.map((image) => (
-            <img key={image?.id} src={image?.url} alt="Spot" className="spot-image-lg" />
-          ))}
+          {spot?.SpotImages &&
+            spot?.SpotImages.map((image) => (
+              <img key={image?.id} src={image?.url} alt="Spot" className="spot-image-lg" />
+            ))}
         </div>
         <div className="spot-host">
           Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}
@@ -83,7 +100,6 @@ function SpotDetail() {
             Reserve
           </button>
         </div>
-
 
         <div className="reviews-container">
           <h2>Reviews</h2>
@@ -120,6 +136,14 @@ function SpotDetail() {
           )}
         </div>
       </div>
+
+      {isReviewModalOpen && (
+        <CreateReviewModal
+          closeModal={() => setIsReviewModalOpen(false)}
+          spotId={id}
+          onSubmit={handleReviewSubmit}
+        />
+      )}
     </div>
   );
 }

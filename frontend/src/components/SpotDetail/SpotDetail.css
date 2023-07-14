@@ -20,33 +20,24 @@
 }
 
 .spot-image-lg {
-  width: 70%;
-  height: 300px;
-  background-color: #ccc;
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
   border-radius: 4px;
 }
 
 .spot-image-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  width: 30%;
+  justify-content: flex-start;
+  gap: 10px;
 }
 
 .spot-image-sm {
-  width: 100%;
-  height: calc(75px + 10px);
-  background-color: #ccc;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
   border-radius: 4px;
-  border: 1px solid transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.spot-image-sm::before {
-  content: 'Image';
 }
 
 .spot-details {
@@ -62,6 +53,7 @@
 .spot-host {
   font-size: 16px;
   margin-bottom: 10px;
+  color: #555;
 }
 
 .spot-description {
@@ -76,11 +68,20 @@
   background-color: #f7f7f7;
   padding: 10px;
   border-radius: 4px;
+  margin-top: 20px;
 }
 
 .spot-callout-rating {
   font-size: 16px;
   margin-bottom: 5px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.spot-callout-rating i {
+  color: black;
+  margin-right: 5px;
 }
 
 .spot-callout-reviews {
@@ -93,31 +94,45 @@
   font-size: 18px;
   font-weight: bold;
   color: #f15454;
+  margin-bottom: 10px;
 }
 
-.spot-callout-reserve {
-  margin-top: 10px;
-}
-
-.reserve-button {
+.spot-callout button {
   padding: 10px 20px;
   background-color: #f15454;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
-.reserve-button:hover {
+.spot-callout button:hover {
   background-color: #d14040;
 }
 
 .reviews-container {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .review {
   margin-bottom: 20px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
+}
+
+.review p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.review p:first-child {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.review p:last-child {
+  margin-top: 10px;
 }
