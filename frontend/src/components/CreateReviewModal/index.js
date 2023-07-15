@@ -9,6 +9,7 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
+  // const [images, setImages] = useState('');
 
   const handleSubmit = async () => {
     // Validate form inputs
@@ -28,21 +29,18 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
     // Create the review
     const newReview = {
       spotId,
-      comment,
-      rating,
+      review: comment,
+      stars: rating,
+
     };
 
-    try {
-      await dispatch(createReview(newReview));
-      // Reset form inputs
-      setComment('');
-      setRating(0);
-      setErrors({});
-      // Call the onSubmit callback
-      onSubmit(newReview);
-    } catch (err) {
-      setErrors({ server: 'Failed to submit the review. Please try again.' });
-    }
+    await dispatch(createReview(newReview));
+    // Reset form inputs
+    setComment('');
+    setRating(0);
+    setErrors({});
+    // Call the onSubmit callback
+    onSubmit(newReview);
   };
 
   return (
@@ -64,9 +62,7 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
         onChange={(e) => setRating(Number(e.target.value))}
       />
       {errors.rating && <div className="error">{errors.rating}</div>}
-      <button onClick={handleSubmit}>
-        Submit Your Review
-      </button>
+      <button onClick={handleSubmit}>Submit Your Review</button>
       <button onClick={closeModal}>Cancel</button>
     </div>
   );

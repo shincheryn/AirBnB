@@ -1,9 +1,9 @@
+// SpotDetail.js
 import React, { useEffect, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpotDetail } from '../../store/spots';
 import { fetchReviews, deleteReview, createReview, clearReviews } from '../../store/reviews';
-import { ModalContext } from '../../context/Modal';
 import CreateReviewModal from '../CreateReviewModal';
 import './SpotDetail.css';
 
@@ -20,14 +20,12 @@ function SpotDetail() {
       ? reviews.reduce((sum, review) => sum + review.stars, 0) / totalReviews
       : 0;
 
-  const { setModalContent } = React.useContext(ModalContext);
   const currentUser = useSelector((state) => state.session.user);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [serverError, setServerError] = useState('');
 
   const closeModal = useCallback(() => {
-    setModalContent();
-  }, [setModalContent]);
+    setIsReviewModalOpen(false);
+  }, []);
 
   useEffect(() => {
     dispatch(getSpotDetail(id));
@@ -47,19 +45,10 @@ function SpotDetail() {
   };
 
   const handleReviewSubmit = useCallback(
-    async (reviewData) => {
-      try {
-        const response = await dispatch(createReview(reviewData));
-
-        if (response.error) {
-          setServerError('Failed to submit the review. Please try again.');
-          return;
-        }
-
-        closeModal();
-      } catch (error) {
-        setServerError('Failed to submit the review. Please try again.');
-      }
+    (reviewData) => {
+      dispatch(createReview(reviewData));
+      closeModal();
+      window.location.reload(); // Refresh the page
     },
     [dispatch, closeModal]
   );
@@ -72,10 +61,11 @@ function SpotDetail() {
     return <div>Loading...</div>;
   }
 
+  const hasPostedReview = reviews.some((review) => review?.User?.id === currentUser?.id);
+
   return (
     <div className="spot-detail">
       <h1>{spot.name}</h1>
-      {serverError && <div className="error">{serverError}</div>}
       <div className="spot-info">
         <div className="spot-location">
           Location: {spot?.city}, {spot?.state}, {spot?.country}
@@ -118,7 +108,8 @@ function SpotDetail() {
                     : ''}
                 </p>
                 <p>{review?.review}</p>
-                {review?.User?.id === currentUser.id && (
+                <div className="review-rating">Rating: {review?.stars}</div>
+                {review?.User?.id === currentUser?.id && (
                   <button
                     className="delete-review-button"
                     onClick={() => handleDeleteReview(review.id)}
@@ -127,11 +118,11 @@ function SpotDetail() {
                   </button>
                 )}
               </div>
-            ))
+            )).reverse() // Reverse the order of reviews to show the most recent review first
           )}
         </div>
         <div className="post-review-button">
-          {!reviews.some((review) => review?.User.id === currentUser.id) && (
+          {!currentUser || hasPostedReview ? null : (
             <button onClick={handlePostReview}>Post Your Review</button>
           )}
         </div>
