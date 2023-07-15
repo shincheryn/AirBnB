@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createReview } from '../../store/reviews';
+import { useDispatch, useSelector } from 'react-redux';
+import { createReview, deleteReview } from '../../store/reviews';
+import DeleteModal from './DeleteModal';
 import './CreateReviewForm.css';
 
 const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
   const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.session.user);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
-  // const [images, setImages] = useState('');
 
   const handleSubmit = async () => {
     // Validate form inputs
@@ -31,7 +33,6 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
       spotId,
       review: comment,
       stars: rating,
-
     };
 
     await dispatch(createReview(newReview));
@@ -41,6 +42,17 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
     setErrors({});
     // Call the onSubmit callback
     onSubmit(newReview);
+  };
+
+  const handleDeleteReview = () => {
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirmation = (confirmed) => {
+    if (confirmed) {
+      dispatch(deleteReview(spotId));
+    }
+    setShowDeleteModal(false);
   };
 
   return (
@@ -63,6 +75,18 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
       />
       {errors.rating && <div className="error">{errors.rating}</div>}
       <button onClick={handleSubmit}>Submit Your Review</button>
+      {loggedInUser && loggedInUser.id === spotId && (
+        <button className="delete-button" onClick={handleDeleteReview}>
+          Delete Review
+        </button>
+      )}
+      {showDeleteModal && (
+        <DeleteModal
+          title="Confirm Delete"
+          message="Are you sure you want to delete this review?"
+          onAction={handleDeleteConfirmation}
+        />
+      )}
       <button onClick={closeModal}>Cancel</button>
     </div>
   );

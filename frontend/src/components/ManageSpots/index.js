@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchMySpots } from '../../store/spots';
-import { deleteReview } from '../../store/reviews'; // Import deleteReview from the correct path
+import { fetchMySpots, deleteSpot } from '../../store/spots';
 import ConfirmationModal from './ConfirmationModal';
 import './ManageSpots.css';
 
 function ManageSpots() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [selectedReview, setSelectedReview] = useState(null);
+  const [selectedSpot, setSelectedSpot] = useState(null);
   let spots = useSelector((state) => state?.spots?.mySpots);
   if (spots) spots = Object.values(spots);
 
@@ -21,15 +20,15 @@ function ManageSpots() {
     history.push(`/spots/${spotId}/update`);
   };
 
-  const handleDeleteReview = (reviewId) => {
-    setSelectedReview(reviewId);
+  const handleDeleteSpot = (spotId) => {
+    setSelectedSpot(spotId);
   };
 
   const handleConfirmationModalAction = (confirmed) => {
-    if (confirmed && selectedReview) {
-      dispatch(deleteReview(selectedReview)); // Dispatch the deleteReview action with the selectedReview
+    if (confirmed && selectedSpot) {
+      dispatch(deleteSpot(selectedSpot));
     }
-    setSelectedReview(null);
+    setSelectedSpot(null);
   };
 
   // Check if the user has any spots
@@ -61,7 +60,7 @@ function ManageSpots() {
               <button className="spot-button" onClick={() => handleUpdateSpot(spot?.id)}>
                 Update
               </button>
-              <button className="spot-button" onClick={() => handleDeleteReview(spot?.id)}>
+              <button className="spot-button" onClick={() => handleDeleteSpot(spot?.id)}>
                 Delete
               </button>
             </div>
@@ -70,10 +69,10 @@ function ManageSpots() {
       </div>
       <Link to="/spots/new" className="create-spot-link">Create a New Spot</Link>
 
-      {selectedReview && (
+      {selectedSpot && (
         <ConfirmationModal
           title="Confirm Delete"
-          message="Are you sure you want to delete this review?"
+          message="Are you sure you want to delete this spot?"
           onAction={handleConfirmationModalAction}
         />
       )}

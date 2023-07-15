@@ -1,7 +1,7 @@
 import React from 'react';
-import './ConfirmationModal.css';
+import './DeleteModal.css';
 
-const ConfirmationModal = ({ title, message, onAction }) => {
+const DeleteModal = ({ title, message, onAction }) => {
   const handleConfirm = () => {
     onAction(true);
   };
@@ -11,19 +11,19 @@ const ConfirmationModal = ({ title, message, onAction }) => {
   };
 
   return (
-    <div className="confirmation-modal">
+    <div className="delete-modal">
       <h3>{title}</h3>
       <p>{message}</p>
       <div className="modal-buttons">
         <button className="confirm-button" onClick={handleConfirm}>
-          Yes (Delete Spot)
+          Yes (Delete Review)
         </button>
         <button className="cancel-button" onClick={handleCancel}>
-          No (Keep Spot)
+          No (Keep Review)
         </button>
       </div>
     </div>
   );
 };
 
-export default ConfirmationModal;
+export default DeleteModal;

@@ -1,10 +1,10 @@
-// SpotDetail.js
 import React, { useEffect, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpotDetail } from '../../store/spots';
 import { fetchReviews, deleteReview, createReview, clearReviews } from '../../store/reviews';
 import CreateReviewModal from '../CreateReviewModal';
+import DeleteModal from '../CreateReviewModal/DeleteModal';
 import './SpotDetail.css';
 
 function SpotDetail() {
@@ -22,6 +22,8 @@ function SpotDetail() {
 
   const currentUser = useSelector((state) => state.session.user);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState(null);
 
   const closeModal = useCallback(() => {
     setIsReviewModalOpen(false);
@@ -54,7 +56,15 @@ function SpotDetail() {
   );
 
   const handleDeleteReview = (reviewId) => {
-    dispatch(deleteReview(reviewId));
+    setShowDeleteModal(true);
+    setSelectedReviewId(reviewId);
+  };
+
+  const handleDeleteConfirmation = (confirmed) => {
+    if (confirmed && selectedReviewId) {
+      dispatch(deleteReview(selectedReviewId));
+    }
+    setShowDeleteModal(false);
   };
 
   if (!spot) {
@@ -114,7 +124,7 @@ function SpotDetail() {
                     className="delete-review-button"
                     onClick={() => handleDeleteReview(review.id)}
                   >
-                    Delete
+                    Delete Review
                   </button>
                 )}
               </div>
@@ -133,6 +143,14 @@ function SpotDetail() {
           closeModal={() => setIsReviewModalOpen(false)}
           spotId={id}
           onSubmit={handleReviewSubmit}
+        />
+      )}
+
+      {showDeleteModal && (
+        <DeleteModal
+          title="Confirm Delete"
+          message="Are you sure you want to delete this review?"
+          onAction={handleDeleteConfirmation}
         />
       )}
     </div>

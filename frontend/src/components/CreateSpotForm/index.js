@@ -1,5 +1,3 @@
-// frontend/src/components/CreateSpotForm/index.js
-
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -16,7 +14,7 @@ function CreateSpotForm() {
   const [state, setState] = useState('');
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState({});
   const [previewImage, setPreviewImage] = useState('');
   const [imageUrls, setImageUrls] = useState(['', '', '', '', '']);
   const [errors, setErrors] = useState({});
@@ -28,33 +26,32 @@ function CreateSpotForm() {
     // Validation
     const errors = {};
     if (!country) {
-        errors.country = 'Country is required';
-      }
+      errors.country = 'Country is required';
+    }
     if (!streetAddress) {
       errors.streetAddress = 'Street address is required';
     }
     if (!city) {
-        errors.city = 'City is required';
-      }
-      if (!state) {
-        errors.state = 'State is required';
-      }
-
+      errors.city = 'City is required';
+    }
+    if (!state) {
+      errors.state = 'State is required';
+    }
     if (!description || description.length < 30) {
       errors.description = 'Description needs 30 or more characters';
     }
     if (!title) {
       errors.title = 'Title is required';
     }
-    if (!price) {
-      errors.price = 'Price per night is required';
+    if (isNaN(Number(price))) {
+      errors.price = 'Price is required';
     }
     if (!previewImage) {
       errors.previewImage = 'Preview Image URL is required';
     }
     if (!imageUrls) {
-        errors.imageUrls = 'Image URL must end in .png, .jpg, or .jpeg';
-      }
+      errors.imageUrls = 'Image URL must end in .png, .jpg, or .jpeg';
+    }
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
@@ -62,11 +59,11 @@ function CreateSpotForm() {
 
       const spotData = {
         country,
-        streetAddress,
+        address: streetAddress,
         city,
         state,
         description,
-        title,
+        name: title,
         price,
         previewImage,
         imageUrls,
@@ -138,8 +135,8 @@ function CreateSpotForm() {
         <section>
           <h2>Describe your place to guests</h2>
           <p>
-            Mention the best features of your space, any special amenities like fast wifi or
-            parking, and what you love about the neighborhood.
+            Mention the best features of your space, any special amenities like fast wifi or parking,
+            and what you love about the neighborhood.
           </p>
           <div className="form-group">
             <textarea
