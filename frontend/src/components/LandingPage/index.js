@@ -12,7 +12,7 @@ function LandingPage() {
 
   return (
     <div>
-      <h1>welcome to airbnb</h1>
+      <h1>Welcome to Airbnb</h1>
     </div>
   );
 }

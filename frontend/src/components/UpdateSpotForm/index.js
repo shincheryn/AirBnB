@@ -9,29 +9,34 @@ function SpotUpdate() {
   const history = useHistory();
   const dispatch = useDispatch();
   const spot = useSelector((state) => state.spots[id]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    dispatch(getSpotDetail(id))
-      .then(() => setIsLoading(false))
-      .catch((err) => console.error(err));
+    dispatch(getSpotDetail(id)).catch((err) => {
+      console.error(err);
+      setError('Failed to fetch spot details');
+    });
   }, [dispatch, id]);
 
   const handleSubmit = (formData) => {
     dispatch(updateSpot(id, formData))
       .then(() => {
-        history.push(`/spots/${id}`);
+        history.push(`/spots/${id}/update`);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setError('Failed to update spot');
+      });
   };
 
-  if (isLoading) {
+  if (!spot) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
       <h1>Update your Spot</h1>
+      {error && <div>Error: {error}</div>}
       <CreateSpotForm
         initialValues={{
           country: spot.country,

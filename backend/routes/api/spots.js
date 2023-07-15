@@ -154,8 +154,8 @@ router.post('/', async (req, res, next) => {
       city,
       state,
       country,
-      // lat: parseFloat(lat),
-      // lng: parseFloat(lng),
+      lat: 0.0, // TODO: replace this with actual value
+      lng: 0.0, // TODO: replace this with actual value
       name,
       description,
       price: parseFloat(price)

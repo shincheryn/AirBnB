@@ -5,6 +5,7 @@ const GET_SPOT_DETAIL = 'spots/getSpotDetail';
 const ALL_SPOTS = 'spots/allSpots';
 const MY_SPOTS = 'spots/mySpots';
 const DELETE_SPOT = 'spots/deleteSpot';
+const UPDATE_SPOT = 'spots/updateSpot';
 
 // Action Creators
 const spotDetail = (spot) => ({
@@ -25,6 +26,11 @@ const mySpots = (spots) => ({
 const deleteSpotAction = (spotId) => ({
   type: DELETE_SPOT,
   spotId,
+});
+
+const updateSpotAction = (spot) => ({
+  type: UPDATE_SPOT,
+  spot,
 });
 
 // Thunks
@@ -85,6 +91,23 @@ export const deleteSpot = (spotId) => async (dispatch) => {
   }
 };
 
+export const updateSpot = (spotId, spotData) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: 'PUT',
+      body: JSON.stringify(spotData),
+    });
+    if (!response.ok) {
+      throw new Error('Spot update failed');
+    }
+    const spot = await response.json();
+    dispatch(updateSpotAction(spot));
+    return spot;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Spots Reducer
 const spotsReducer = (state = {}, action) => {
   const newState = { ...state };
@@ -108,6 +131,10 @@ const spotsReducer = (state = {}, action) => {
 
     case DELETE_SPOT:
       delete newState[action.spotId];
+      return newState;
+
+    case UPDATE_SPOT:
+      newState[action.spot.id] = action.spot;
       return newState;
 
     default:

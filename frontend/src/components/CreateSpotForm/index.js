@@ -14,7 +14,7 @@ function CreateSpotForm() {
   const [state, setState] = useState('');
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState({});
+  const [price, setPrice] = useState('');
   const [previewImage, setPreviewImage] = useState('');
   const [imageUrls, setImageUrls] = useState(['', '', '', '', '']);
   const [errors, setErrors] = useState({});
@@ -43,7 +43,7 @@ function CreateSpotForm() {
     if (!title) {
       errors.title = 'Title is required';
     }
-    if (isNaN(Number(price))) {
+    if (!price) {
       errors.price = 'Price is required';
     }
     if (!previewImage) {
@@ -64,7 +64,7 @@ function CreateSpotForm() {
         state,
         description,
         name: title,
-        price,
+        price: Number(price),
         previewImage,
         imageUrls,
       };
