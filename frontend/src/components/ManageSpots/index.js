@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMySpots, deleteSpot } from '../../store/spots';
@@ -26,7 +26,13 @@ function ManageSpots() {
 
   const handleConfirmationModalAction = (confirmed) => {
     if (confirmed && selectedSpot) {
-      dispatch(deleteSpot(selectedSpot));
+      dispatch(deleteSpot(selectedSpot))
+        .then(() => {
+          window.location.reload(); // Refresh the page
+        })
+        .catch((error) => {
+          console.error('Spot deletion failed:', error);
+        });
     }
     setSelectedSpot(null);
   };

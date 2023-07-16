@@ -9,11 +9,11 @@ function CreateSpotForm() {
   const history = useHistory();
 
   const [country, setCountry] = useState('');
-  const [streetAddress, setStreetAddress] = useState('');
+  const [address, setStreetAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [previewImage, setPreviewImage] = useState('');
   const [imageUrls, setImageUrls] = useState(['', '', '', '', '']);
@@ -28,8 +28,8 @@ function CreateSpotForm() {
     if (!country) {
       errors.country = 'Country is required';
     }
-    if (!streetAddress) {
-      errors.streetAddress = 'Street address is required';
+    if (!address) {
+      errors.address = 'Street address is required';
     }
     if (!city) {
       errors.city = 'City is required';
@@ -40,8 +40,8 @@ function CreateSpotForm() {
     if (!description || description.length < 30) {
       errors.description = 'Description needs 30 or more characters';
     }
-    if (!title) {
-      errors.title = 'Title is required';
+    if (!name) {
+      errors.name = 'Name is required';
     }
     if (!price) {
       errors.price = 'Price is required';
@@ -59,11 +59,11 @@ function CreateSpotForm() {
 
       const spotData = {
         country,
-        address: streetAddress,
+        address: address,
         city,
         state,
         description,
-        name: title,
+        name: name,
         price: Number(price),
         previewImage,
         imageUrls,
@@ -103,7 +103,7 @@ function CreateSpotForm() {
             <input
               type="text"
               id="streetAddress"
-              value={streetAddress}
+              value={address}
               onChange={(e) => setStreetAddress(e.target.value)}
               placeholder="Street Address"
             />
@@ -153,11 +153,11 @@ function CreateSpotForm() {
           <div className="form-group">
             <input
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Name of your spot"
             />
-            {errors.title && <p className="error">{errors.title}</p>}
+            {errors.name && <p className="error">{errors.title}</p>}
           </div>
         </section>
         <section>

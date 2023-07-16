@@ -11,6 +11,7 @@ import Spots from './components/Spots/index';
 import SpotDetail from './components/SpotDetail/index';
 import CreateSpotForm from './components/CreateSpotForm/index';
 import ManageSpots from './components/ManageSpots/index';
+import UpdateSpotForm from './components/UpdateSpotForm';
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,12 @@ function App() {
             <Route path="/spots/manage">
               <ManageSpots />
             </Route>
+
+            <Route path="/spots/:id/update">
+              <UpdateSpotForm />
+            </Route>
+
+
             <Route path="/spots/:id">
               <SpotDetail />
             </Route>

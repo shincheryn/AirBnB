@@ -232,12 +232,13 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     if (typeof country !== 'string') {
       errors.country = 'Country is required';
     }
-    if (typeof lat !== 'number') {
-      errors.lat = 'Latitude is required';
-    }
-    if (typeof lng !== 'number') {
-      errors.lng = 'Longitude is required';
-    }
+    // if (typeof lat !== 'number') {
+    //   errors.lat = 'Latitude is required';
+    // }
+    // if (typeof lng !== 'number') {
+    //   errors.lng = 'Longitude is required';
+    // }
+
     if (typeof name !== 'string') {
       errors.name = 'Name is required';
     }
@@ -260,8 +261,8 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     spot.city = city;
     spot.state = state;
     spot.country = country;
-    spot.lat = parseFloat(lat);
-    spot.lng = parseFloat(lng);
+    spot.lat = 0.0;
+    spot.lng = 0.0;
     spot.name = name;
     spot.description = description;
     spot.price = parseFloat(price);

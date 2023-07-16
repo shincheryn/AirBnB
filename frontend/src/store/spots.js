@@ -62,50 +62,32 @@ export const fetchMySpots = () => async (dispatch) => {
 };
 
 export const createSpot = (spotData) => async (dispatch) => {
-  try {
-    const response = await csrfFetch('/api/spots', {
+    const res = await csrfFetch('/api/spots', {
       method: 'POST',
       body: JSON.stringify(spotData),
     });
-    if (!response.ok) {
-      throw new Error('Spot creation failed');
-    }
-    const spot = await response.json();
+    const spot = await res.json();
     return spot;
-  } catch (error) {
-    throw error;
-  }
 };
 
 export const deleteSpot = (spotId) => async (dispatch) => {
-  try {
-    const response = await csrfFetch(`/api/spots/${spotId}`, {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
       method: 'DELETE',
     });
-    if (!response.ok) {
+    if (!res.ok) {
       throw new Error('Spot deletion failed');
     }
     dispatch(deleteSpotAction(spotId));
-  } catch (error) {
-    throw error;
-  }
 };
 
 export const updateSpot = (spotId, spotData) => async (dispatch) => {
-  try {
-    const response = await csrfFetch(`/api/spots/${spotId}`, {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
       method: 'PUT',
       body: JSON.stringify(spotData),
     });
-    if (!response.ok) {
-      throw new Error('Spot update failed');
-    }
-    const spot = await response.json();
+    const spot = await res.json();
     dispatch(updateSpotAction(spot));
-    return spot;
-  } catch (error) {
-    throw error;
-  }
+    return res;
 };
 
 // Spots Reducer
