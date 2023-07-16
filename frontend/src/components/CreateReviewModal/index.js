@@ -57,7 +57,7 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
 
   const handleStarClick = (starIndex) => {
     const newRating = starIndex + 1;
-    setRating((prevRating) => (prevRating === newRating ? newRating - 1 : newRating));
+    setRating(newRating);
   };
 
   const renderStars = () => {
@@ -68,14 +68,14 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
         <i
           key={i}
           className={`fa ${starIcon} star ${i < rating ? 'active' : ''}`}
+          onMouse={() => setRating(i + 1)}
           onClick={() => handleStarClick(i)}
-          onMouseEnter={() => setRating(i + 1)}
-          onMouseLeave={() => setRating(0)}
         ></i>
       );
     }
     return stars;
   };
+
 
 
   return (
