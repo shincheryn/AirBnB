@@ -12,32 +12,46 @@ function UpdateSpotForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     country: '',
-    streetAddress: '',
+    address: '',
     city: '',
     state: '',
     description: '',
-    title: '',
+    name: '',
     price: '',
     previewImage: '',
   });
 
   useEffect(() => {
-    dispatch(getSpotDetail(id))
-      .then((data) => {
-        setIsLoading(false);
-        setFormData({
-          country: spot?.country,
-          streetAddress: spot?.address,
-          city: spot?.city,
-          state: spot?.state,
-          description: spot?.description,
-          title: spot?.name,
-          price: spot?.price,
-          previewImage: spot?.previewImage,
-        });
-      })
-      .catch((err) => console.error(err));
-  }, [dispatch, id]);
+    if (spot) {
+      setIsLoading(false);
+      setFormData({
+        country: spot.country,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        description: spot.description,
+        name: spot.name,
+        price: spot.price,
+        previewImage: spot.previewImage,
+      });
+    } else {
+      dispatch(getSpotDetail(id))
+        .then((data) => {
+          setIsLoading(false);
+          setFormData({
+            country: data.country,
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            description: data.description,
+            name: data.name,
+            price: data.price,
+            previewImage: data.previewImage,
+          });
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [dispatch, id, spot]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -82,8 +96,8 @@ function UpdateSpotForm() {
             <input
               type="text"
               id="streetAddress"
-              name="streetAddress"
-              value={formData.streetAddress}
+              name="address"
+              value={formData.address}
               onChange={handleChange}
               placeholder="Street Address"
             />
@@ -132,8 +146,8 @@ function UpdateSpotForm() {
           <div className="form-group">
             <input
               type="text"
-              name="title"
-              value={formData.title}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               placeholder="Name of your spot"
             />
