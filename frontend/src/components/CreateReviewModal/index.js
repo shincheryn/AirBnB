@@ -55,6 +55,29 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
     setShowDeleteModal(false);
   };
 
+  const handleStarClick = (starIndex) => {
+    const newRating = starIndex + 1;
+    setRating((prevRating) => (prevRating === newRating ? newRating - 1 : newRating));
+  };
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      const starIcon = i < rating ? 'fa-solid fa-star' : 'fa-duotone fa-star';
+      stars.push(
+        <i
+          key={i}
+          className={`fa ${starIcon} star ${i < rating ? 'active' : ''}`}
+          onClick={() => handleStarClick(i)}
+          onMouseEnter={() => setRating(i + 1)}
+          onMouseLeave={() => setRating(0)}
+        ></i>
+      );
+    }
+    return stars;
+  };
+
+
   return (
     <div className="create-review-modal">
       <h3>How was your stay?</h3>
@@ -66,13 +89,7 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
       ></textarea>
       {errors.comment && <div className="error">{errors.comment}</div>}
       <label>Stars</label>
-      <input
-        type="number"
-        min={1}
-        max={5}
-        value={rating}
-        onChange={(e) => setRating(Number(e.target.value))}
-      />
+      <div className="star-rating">{renderStars()}</div>
       {errors.rating && <div className="error">{errors.rating}</div>}
       <button onClick={handleSubmit}>Submit Your Review</button>
       {loggedInUser && loggedInUser.id === spotId && (

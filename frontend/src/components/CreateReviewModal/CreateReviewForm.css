@@ -46,12 +46,21 @@
   font-weight: bold;
 }
 
-.create-review-modal input[type='number'] {
-  width: 50px;
-  padding: 5px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.create-review-modal .star-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-review-modal .star {
+  font-size: 30px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.create-review-modal .star.active {
+  color: black;
 }
 
 .create-review-modal button {
