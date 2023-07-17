@@ -88,7 +88,7 @@ router.get("/", async (req, res) => {
         as: "SpotImages",
         duplicating: false,
         required: false,
-        where: { imageableId: Sequelize.col("Spot.id"), preview: true },
+        where: { preview: true },
         attributes: ["id", "url", "preview"],
       },
     ],
