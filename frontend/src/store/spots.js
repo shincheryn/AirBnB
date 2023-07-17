@@ -3,7 +3,7 @@ import { csrfFetch } from "./csrf";
 // Action Types
 const GET_SPOT_DETAIL = "spots/getSpotDetail";
 const ALL_SPOTS = "spots/allSpots";
-const MY_SPOTS = "spots/mySpots";
+// const MY_SPOTS = "spots/mySpots";
 const DELETE_SPOT = "spots/deleteSpot";
 const UPDATE_SPOT = "spots/updateSpot";
 const CREATE_IMAGE = "spots/createImage";
@@ -19,10 +19,10 @@ const allSpots = (spots) => ({
   spots,
 });
 
-const mySpots = (spots) => ({
-  type: MY_SPOTS,
-  spots,
-});
+// const mySpots = (spots) => ({
+//   type: MY_SPOTS,
+//   spots,
+// });
 
 const deleteSpotAction = (spotId) => ({
   type: DELETE_SPOT,
@@ -59,14 +59,14 @@ export const fetchSpots = () => async (dispatch) => {
   return res;
 };
 
-export const fetchMySpots = () => async (dispatch) => {
-  const res = await csrfFetch("/api/users/spots", {
-    method: "GET",
-  });
-  const data = await res.json();
-  dispatch(mySpots(data.Spots));
-  return res;
-};
+// export const fetchMySpots = () => async (dispatch) => {
+//   const res = await csrfFetch("/api/users/spots", {
+//     method: "GET",
+//   });
+//   const data = await res.json();
+//   dispatch(mySpots(data.Spots));
+//   return res;
+// };
 
 export const createSpot = (spotData) => async (dispatch) => {
   const res = await csrfFetch("/api/spots", {
@@ -121,12 +121,12 @@ const spotsReducer = (state = {}, action) => {
       });
       return newState;
 
-    case MY_SPOTS:
-      newState.mySpots = {};
-      action.spots.forEach((spot) => {
-        newState.mySpots[spot.id] = spot;
-      });
-      return newState;
+    // case MY_SPOTS:
+    //   newState.mySpots = {};
+    //   action.spots.forEach((spot) => {
+    //     newState.mySpots[spot.id] = spot;
+    //   });
+    //   return newState;
 
     case DELETE_SPOT:
       delete newState[action.spotId];
@@ -135,11 +135,6 @@ const spotsReducer = (state = {}, action) => {
     case UPDATE_SPOT:
       newState[action.spot.id] = action.spot;
       return newState;
-
-    // case CREATE_IMAGES:
-    //   newState[action.spotId].preview = action.spotImages.preview;
-    //   newState[action.spotId].url = action.spotImages.url;
-    //   return newState;
 
     default:
       return state;

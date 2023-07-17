@@ -122,7 +122,6 @@ function SpotDetail() {
         </div>
 
         <div className="reviews-container">
-          {/* make it lil bigger */}
           {totalReviews === 0 ? (
             <div>
               <i className="fa-solid fa-star"></i> NEW

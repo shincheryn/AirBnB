@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMySpots, deleteSpot } from "../../store/spots";
+import { deleteSpot } from "../../store/spots";
+import { fetchMySpots } from "../../store/myspots";
 import ConfirmationModal from "./ConfirmationModal";
 import "./ManageSpots.css";
 
@@ -96,25 +97,23 @@ function ManageSpots() {
                     <div className="spot-callout-reviews">{totalReviews}</div>
                   </div>
                 )}
-
               </div>
             </Link>
             <div className="spot-buttons">
-                  <button
-                    className="update-button"
-                    onClick={() => handleUpdateSpot(spot?.id)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteSpot(spot?.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+              <button
+                className="update-button"
+                onClick={() => handleUpdateSpot(spot?.id)}
+              >
+                Update
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => handleDeleteSpot(spot?.id)}
+              >
+                Delete
+              </button>
             </div>
-
+          </div>
         ))}
       </div>
 
