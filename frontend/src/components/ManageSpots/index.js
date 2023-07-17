@@ -13,7 +13,7 @@ function ManageSpots() {
   const [selectedSpot, setSelectedSpot] = useState(null);
 
   //Spots
-  let spots = useSelector((state) => state?.spots?.mySpots);
+  let spots = useSelector((state) => state?.mySpots);
   if (spots) spots = Object.values(spots);
 
   //Reviews
