@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createReview, deleteReview } from '../../store/reviews';
-import DeleteModal from './DeleteModal';
-import './CreateReviewForm.css';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createReview, deleteReview } from "../../store/reviews";
+import DeleteModal from "./DeleteModal";
+import "./CreateReviewForm.css";
 
 const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.session.user);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
 
@@ -17,10 +17,10 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
     // Validate form inputs
     const validationErrors = {};
     if (comment.length < 10) {
-      validationErrors.comment = 'Comment must be at least 10 characters long';
+      validationErrors.comment = "Comment must be at least 10 characters long";
     }
     if (rating === 0) {
-      validationErrors.rating = 'Please select a rating';
+      validationErrors.rating = "Please select a rating";
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -37,7 +37,7 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
 
     await dispatch(createReview(newReview));
     // Reset form inputs
-    setComment('');
+    setComment("");
     setRating(0);
     setErrors({});
     // Call the onSubmit callback
@@ -63,11 +63,11 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
   const renderStars = () => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
-      const starIcon = i < rating ? 'fa-solid fa-star' : 'fa-duotone fa-star';
+      const starIcon = i < rating ? "fa-solid fa-star" : "fa-duotone fa-star";
       stars.push(
         <i
           key={i}
-          className={`fa ${starIcon} star ${i < rating ? 'active' : ''}`}
+          className={`fa ${starIcon} star ${i < rating ? "active" : ""}`}
           onMouse={() => setRating(i + 1)}
           onClick={() => handleStarClick(i)}
         ></i>
@@ -75,8 +75,6 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
     }
     return stars;
   };
-
-
 
   return (
     <div className="create-review-modal">
@@ -91,7 +89,9 @@ const CreateReviewModal = ({ closeModal, spotId, onSubmit }) => {
       <label>Stars</label>
       <div className="star-rating">{renderStars()}</div>
       {errors.rating && <div className="error">{errors.rating}</div>}
-      <button onClick={handleSubmit}>Submit Your Review</button>
+      <button disabled={comment.length < 10} onClick={handleSubmit}>
+        Submit Your Review
+      </button>
       {loggedInUser && loggedInUser.id === spotId && (
         <button className="delete-button" onClick={handleDeleteReview}>
           Delete Review

@@ -1,17 +1,21 @@
-import React from 'react';
-import LoginFormPage from '.';
+import React, { useContext } from 'react';
+import { ModalContext } from '../../context/Modal';
+import LoginFormPage from './index';
 
-const LoginFormModal = ({ closeModal }) => {
+function LoginFormModal() {
+  const { setModalContent } = useContext(ModalContext);
 
-  const handleModalClose = () => {
-    closeModal();
+  const closeModal = () => {
+    setModalContent(null);
   };
 
   return (
-    <div>
-      <LoginFormPage onClose={handleModalClose} />
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <LoginFormPage onClose={closeModal} />
+      </div>
     </div>
   );
-};
+}
 
 export default LoginFormModal;

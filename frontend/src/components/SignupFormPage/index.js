@@ -1,19 +1,18 @@
-// frontend/src/components/SignupFormPage/index.js
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import * as sessionActions from "../../store/session";
-import "./SignupForm.css";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import * as sessionActions from '../../store/session';
+import './SignupForm.css';
 
-function SignupFormPage() {
+function SignupFormPage({ onClose }) {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
 
   if (sessionUser) return <Redirect to="/" />;
@@ -23,9 +22,10 @@ function SignupFormPage() {
     if (password === confirmPassword) {
       setErrors({});
       if (password.length < 6) {
-        setErrors({
-          password: "Password must be 6 characters or more",
-        });
+        setErrors((prevState) => ({
+          ...prevState,
+          password: 'Password must be 6 characters or more',
+        }));
         return;
       }
       const user = {
@@ -36,14 +36,19 @@ function SignupFormPage() {
         password,
       };
       const res = await dispatch(sessionActions.signup(user));
-      const data = await res.json();
-      if (data.errors) {
-        setErrors(data.errors);
+      if (res.ok) {
+        onClose(); // Close the modal
+      } else {
+        const data = await res.json();
+        if (data.errors) {
+          setErrors(data.errors);
+        }
       }
     } else {
-      setErrors({
-        confirmPassword: "Confirm Password field must be the same as the Password field",
-      });
+      setErrors((prevState) => ({
+        ...prevState,
+        confirmPassword: 'Confirm Password field must be the same as the Password field',
+      }));
     }
   };
 

@@ -1,10 +1,9 @@
 import React from 'react';
-import SignupFormPage from '.';
+import SignupFormPage from './index';
 
-const SignupFormModal = ({ closeModal }) => {
-
+const SignupFormModal = ({ onClose }) => {
   const handleModalClose = () => {
-    closeModal();
+    onClose();
   };
 
   return (

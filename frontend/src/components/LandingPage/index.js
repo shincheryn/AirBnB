@@ -12,7 +12,6 @@ function LandingPage() {
 
   return (
     <div>
-      <h1>Welcome to Airbnb</h1>
     </div>
   );
 }

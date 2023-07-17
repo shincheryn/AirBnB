@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import LoginFormModal from '../LoginFormPage/LoginFormModal';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
   const history = useHistory();
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogoClick = () => {
     history.push('/');
     window.location.reload();
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -30,12 +40,13 @@ function Navigation({ isLoaded }) {
       )}
       {isLoaded && (
         <li>
-          <ProfileButton user={sessionUser} />
+          <ProfileButton user={sessionUser} openModal={openModal} />
         </li>
       )}
+
+      {showModal && <LoginFormModal closeModal={closeModal} />}
     </ul>
   );
 }
-
 
 export default Navigation;

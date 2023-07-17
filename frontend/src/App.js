@@ -45,8 +45,6 @@ function App() {
             <Route path="/spots/:id/update">
               <UpdateSpotForm />
             </Route>
-
-
             <Route path="/spots/:id">
               <SpotDetail />
             </Route>

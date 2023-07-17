@@ -37,6 +37,7 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    history.push('/'); // Redirect to the homepage
   };
 
   const navigateToManageSpots = (e) => {
@@ -70,12 +71,12 @@ function ProfileButton({ user }) {
             <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
+              modalComponent={<LoginFormModal onClose={closeMenu} />}
             />
             <OpenModalMenuItem
               itemText="Sign Up"
               onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
+              modalComponent={<SignupFormModal onClose={closeMenu} />}
             />
           </>
         )}

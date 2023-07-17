@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import { updateSpot, getSpotDetail } from '../../store/spots';
-import './UpdateSpotForm.css';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { updateSpot, getSpotDetail } from "../../store/spots";
+import "./UpdateSpotForm.css";
 
 function UpdateSpotForm() {
   const { id } = useParams();
@@ -11,14 +11,14 @@ function UpdateSpotForm() {
   const spot = useSelector((state) => state.spots[id]);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
-    country: '',
-    address: '',
-    city: '',
-    state: '',
-    description: '',
-    name: '',
-    price: '',
-    previewImage: '',
+    country: "",
+    address: "",
+    city: "",
+    state: "",
+    description: "",
+    name: "",
+    price: "",
+    previewImage: "",
   });
 
   useEffect(() => {
@@ -69,6 +69,13 @@ function UpdateSpotForm() {
     });
   };
 
+  const handleNumberChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: Number(e.target.value),
+    });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -79,7 +86,10 @@ function UpdateSpotForm() {
       <form onSubmit={handleSubmit}>
         <section>
           <h2>Where's your place located?</h2>
-          <p>Guests will only get your exact address once they book a reservation.</p>
+          <p>
+            Guests will only get your exact address once they book a
+            reservation.
+          </p>
           <div className="form-group">
             <label htmlFor="country">Country</label>
             <input
@@ -128,8 +138,8 @@ function UpdateSpotForm() {
         <section>
           <h2>Describe your place to guests</h2>
           <p>
-            Mention the best features of your space, any special amenities like fast wifi or parking,
-            and what you love about the neighborhood.
+            Mention the best features of your space, any special amenities like
+            fast wifi or parking, and what you love about the neighborhood.
           </p>
           <div className="form-group">
             <textarea
@@ -142,7 +152,10 @@ function UpdateSpotForm() {
         </section>
         <section>
           <h2>Create a title for your spot</h2>
-          <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+          <p>
+            Catch guests' attention with a spot title that highlights what makes
+            your place special.
+          </p>
           <div className="form-group">
             <input
               type="text"
@@ -155,13 +168,16 @@ function UpdateSpotForm() {
         </section>
         <section>
           <h2>Set a base price for your spot</h2>
-          <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+          <p>
+            Competitive pricing can help your listing stand out and rank higher
+            in search results.
+          </p>
           <div className="form-group">
             <input
               type="number"
               name="price"
               value={formData.price}
-              onChange={handleChange}
+              onChange={handleNumberChange}
               placeholder="Price per night (USD)"
             />
           </div>
