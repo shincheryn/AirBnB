@@ -1,42 +1,89 @@
-/* frontend/src/components/SignupFormPage/SignupForm.css */
-
 /* Signup form container */
 .signup-form-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
 
-  /* Form inputs */
-  .signup-form-container input[type="text"],
-  .signup-form-container input[type="password"],
-  .signup-form-container input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+/* Form inputs */
+.signup-form-container input[type="text"],
+.signup-form-container input[type="password"],
+.signup-form-container input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
-  /* Form submit button */
-  .signup-form-container button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+/* Form submit button */
+.signup-form-container button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: grey;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+}
 
-  /* Error messages */
-  .signup-form-container .error-message {
-    color: red;
-    margin-top: 5px;
-  }
+.signup-form-container button[type="submit"]:enabled {
+  background-color: red;
+  cursor: pointer;
+}
 
+/* Cancel button */
+.signup-form-container button[type="button"] {
+  width: 100%;
+  padding: 10px;
+  background-color: grey;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  /* disabled = grey */
+/* Center buttons horizontally */
+.signup-form-container button[type="submit"],
+.signup-form-container button[type="button"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Error messages */
+.signup-form-container .error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+/* Background overlay */
+.signup-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.signup-button {
+  margin-right: 10px;
+}

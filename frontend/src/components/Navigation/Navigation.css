@@ -18,6 +18,7 @@ li {
 
 .logo i {
   margin-right: 10px;
+  color: darkgrey; /* Update icon color to dark grey */
 }
 
 .logo a {
@@ -40,6 +41,7 @@ button {
   border: none;
   cursor: pointer;
   font-weight: bold;
+  color: grey
 }
 
 /* Dropdown Menu */
@@ -68,15 +70,16 @@ button {
 .profile-dropdown button {
   display: block;
   width: 100%;
-  padding: 4px 8px;
-  background-color: transparent;
+  padding: 0px 4px;
+  /* background-color: transparent; */
   border: none;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
+  color: black
 }
 
 .profile-dropdown button:hover {
-  background-color: #f5f5f5;
+  background-color: lightgrey;
 }
 
 .profile-dropdown.hidden {

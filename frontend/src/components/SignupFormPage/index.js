@@ -72,7 +72,7 @@ function SignupFormPage({ onClose }) {
     }
   };
 
-  //Close Modal
+  // Close Modal
   const handleModalClose = () => {
     setEmail("");
     setUsername("");
@@ -85,69 +85,71 @@ function SignupFormPage({ onClose }) {
   };
 
   return (
-    <>
+    <div className="signup-form-container">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Email
+        <div>
+          <label>Email</label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
+          {errors.email && <p className="error-message">{errors.email}</p>}
+        </div>
+        <div>
+          <label>Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
-        <label>
-          First Name
+          {errors.username && <p className="error-message">{errors.username}</p>}
+        </div>
+        <div>
+          <label>First Name</label>
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-        </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
-          Last Name
+          {errors.firstName && <p className="error-message">{errors.firstName}</p>}
+        </div>
+        <div>
+          <label>Last Name</label>
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-        </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
-        <label>
-          Password
+          {errors.lastName && <p className="error-message">{errors.lastName}</p>}
+        </div>
+        <div>
+          <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
+          {errors.password && <p className="error-message">{errors.password}</p>}
+        </div>
+        <div>
+          <label>Confirm Password</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+          {errors.confirmPassword && (
+            <p className="error-message">{errors.confirmPassword}</p>
+          )}
+        </div>
         <button disabled={shouldDisableSignUp()} type="submit">
           Sign Up
         </button>
@@ -155,7 +157,7 @@ function SignupFormPage({ onClose }) {
           Cancel
         </button>
       </form>
-    </>
+    </div>
   );
 }
 
