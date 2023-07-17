@@ -65,7 +65,7 @@ router.get("/", async (req, res) => {
   );
 
   const spots = await Spot.findAll({
-    group: ["Spot.id"],
+    group: ["Spot.id", "SpotImages.id"],
 
     where: {
       lat: { [Op.between]: [minLat, maxLat] },
