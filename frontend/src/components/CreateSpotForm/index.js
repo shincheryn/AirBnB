@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { createSpot } from '../../store/spots';
-import './CreateSpotForm.css';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { createSpot, createImage } from "../../store/spots";
+import "./CreateSpotForm.css";
 
 function CreateSpotForm() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [country, setCountry] = useState('');
-  const [address, setStreetAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [description, setDescription] = useState('');
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [previewImage, setPreviewImage] = useState('');
-  const [imageUrls, setImageUrls] = useState(['', '', '', '', '']);
+  const [country, setCountry] = useState("");
+  const [address, setStreetAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [imageUrls, setImageUrls] = useState(["", "", "", "", ""]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -26,31 +26,31 @@ function CreateSpotForm() {
     // Validation
     const errors = {};
     if (!country) {
-      errors.country = 'Country is required';
+      errors.country = "Country is required";
     }
     if (!address) {
-      errors.address = 'Street address is required';
+      errors.address = "Street address is required";
     }
     if (!city) {
-      errors.city = 'City is required';
+      errors.city = "City is required";
     }
     if (!state) {
-      errors.state = 'State is required';
+      errors.state = "State is required";
     }
     if (!description || description.length < 30) {
-      errors.description = 'Description needs 30 or more characters';
+      errors.description = "Description needs 30 or more characters";
     }
     if (!name) {
-      errors.name = 'Name is required';
+      errors.name = "Name is required";
     }
     if (!price) {
-      errors.price = 'Price is required';
+      errors.price = "Price is required";
     }
     if (!previewImage) {
-      errors.previewImage = 'Preview Image URL is required';
+      errors.previewImage = "Preview Image URL is required";
     }
     if (!imageUrls) {
-      errors.imageUrls = 'Image URL must end in .png, .jpg, or .jpeg';
+      errors.imageUrls = "Image URL must end in .png, .jpg, or .jpeg";
     }
     setErrors(errors);
 
@@ -65,15 +65,21 @@ function CreateSpotForm() {
         description,
         name: name,
         price: Number(price),
-        previewImage,
-        imageUrls,
       };
 
       try {
         const spot = await dispatch(createSpot(spotData));
+        await dispatch(
+          createImage(spot.id, { preview: true, url: previewImage })
+        );
+        imageUrls.forEach(async (url) => {
+          if (url) {
+            await dispatch(createImage(spot.id, { preview: false, url: url }));
+          }
+        });
         history.push(`/spots/${spot.id}`);
       } catch (error) {
-        console.log('Spot creation failed:', error);
+        console.log("Spot creation failed:", error);
       }
 
       setIsSubmitting(false);
@@ -86,7 +92,10 @@ function CreateSpotForm() {
       <form onSubmit={handleCreateSpot}>
         <section>
           <h2>Where's your place located?</h2>
-          <p>Guests will only get your exact address once they book a reservation.</p>
+          <p>
+            Guests will only get your exact address once they book a
+            reservation.
+          </p>
           <div className="form-group">
             <label htmlFor="country">Country</label>
             <input
@@ -107,7 +116,9 @@ function CreateSpotForm() {
               onChange={(e) => setStreetAddress(e.target.value)}
               placeholder="Street Address"
             />
-            {errors.streetAddress && <p className="error">{errors.streetAddress}</p>}
+            {errors.streetAddress && (
+              <p className="error">{errors.streetAddress}</p>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="city">City</label>
@@ -135,8 +146,8 @@ function CreateSpotForm() {
         <section>
           <h2>Describe your place to guests</h2>
           <p>
-            Mention the best features of your space, any special amenities like fast wifi or parking,
-            and what you love about the neighborhood.
+            Mention the best features of your space, any special amenities like
+            fast wifi or parking, and what you love about the neighborhood.
           </p>
           <div className="form-group">
             <textarea
@@ -144,12 +155,17 @@ function CreateSpotForm() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Please write at least 30 characters"
             ></textarea>
-            {errors.description && <p className="error">{errors.description}</p>}
+            {errors.description && (
+              <p className="error">{errors.description}</p>
+            )}
           </div>
         </section>
         <section>
           <h2>Create a title for your spot</h2>
-          <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+          <p>
+            Catch guests' attention with a spot title that highlights what makes
+            your place special.
+          </p>
           <div className="form-group">
             <input
               type="text"
@@ -162,7 +178,10 @@ function CreateSpotForm() {
         </section>
         <section>
           <h2>Set a base price for your spot</h2>
-          <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+          <p>
+            Competitive pricing can help your listing stand out and rank higher
+            in search results.
+          </p>
           <div className="form-group">
             <input
               type="number"
@@ -183,7 +202,9 @@ function CreateSpotForm() {
               onChange={(e) => setPreviewImage(e.target.value)}
               placeholder="Preview Image URL"
             />
-            {errors.previewImage && <p className="error">{errors.previewImage}</p>}
+            {errors.previewImage && (
+              <p className="error">{errors.previewImage}</p>
+            )}
           </div>
           {imageUrls.map((imageUrl, index) => (
             <div className="form-group" key={index}>

@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ModalContext } from '../../context/Modal';
 import SignupFormPage from './index';
 
-const SignupFormModal = ({ onClose }) => {
-  const handleModalClose = () => {
-    onClose();
-  };
+const SignupFormModal = () => {
+  const { setModalContent } = useContext(ModalContext)
+
+  const closeModal = () => {
+    setModalContent(null);
+  }
 
   return (
-    <div>
-      <SignupFormPage onClose={handleModalClose} />
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <SignupFormPage onClose={closeModal} />
+      </div>
     </div>
   );
-};
+}
 
 export default SignupFormModal;

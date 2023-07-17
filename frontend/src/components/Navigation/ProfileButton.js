@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import * as sessionActions from '../../store/session';
-import OpenModalMenuItem from './OpenModalMenuItem';
-import LoginFormModal from '../LoginFormPage/LoginFormModal';
-import SignupFormModal from '../SignupFormPage/SignupFormModal';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as sessionActions from "../../store/session";
+import OpenModalMenuItem from "./OpenModalMenuItem";
+import LoginFormModal from "../LoginFormPage/LoginFormModal";
+import SignupFormModal from "../SignupFormPage/SignupFormModal";
+import { useHistory } from "react-router-dom";
 
-function ProfileButton({ user }) {
+function ProfileButton() {
+  const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -26,9 +27,9 @@ function ProfileButton({ user }) {
       }
     };
 
-    document.addEventListener('click', closeMenu);
+    document.addEventListener("click", closeMenu);
 
-    return () => document.removeEventListener('click', closeMenu);
+    return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
   const closeMenu = () => setShowMenu(false);
@@ -37,16 +38,16 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
-    history.push('/'); // Redirect to the homepage
+    history.push("/"); // Redirect to the homepage
   };
 
   const navigateToManageSpots = (e) => {
     e.preventDefault();
-    history.push('/spots/manage');
+    history.push("/spots/manage");
     closeMenu();
   };
 
-  const ulClassName = 'profile-dropdown' + (showMenu ? '' : ' hidden');
+  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
     <>

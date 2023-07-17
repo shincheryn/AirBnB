@@ -11,6 +11,7 @@ function SpotDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const spot = useSelector((state) => state.spots[id]);
+  console.log(spot);
   const reviews = useSelector((state) =>
     Object.values(state.reviews).filter(
       (review) => review.spotId === parseInt(id)
@@ -97,12 +98,14 @@ function SpotDetail() {
         <p className="spot-description">{spot?.description}</p>
         <div className="spot-callout">
           <div className="spot-callout-price">${spot?.price} / night</div>
-          {totalReviews == 0  && (spot?.Owner?.id !== currentUser?.id) ? (
+          {totalReviews === 0 ? (
             <div>
               <div className="spot-callout-rating">
                 <i className="fa-solid fa-star"></i> NEW
               </div>
-              <p>Be the first to post a review!</p>
+              {spot?.Owner?.id !== currentUser?.id && (
+                <p>Be the first to post a review!</p>
+              )}
             </div>
           ) : (
             <div>
@@ -123,14 +126,14 @@ function SpotDetail() {
 
         <div className="reviews-container">
           {/* make it lil bigger */}
-          {totalReviews == 0 ? (
+          {totalReviews === 0 ? (
             <div>
               <i className="fa-solid fa-star"></i> NEW
             </div>
           ) : (
             <div>
               <i className="fa-solid fa-star"></i> {averageRating.toFixed(2)} ·{" "}
-              {totalReviews} {totalReviews == 1 ? "review" : "reviews"}
+              {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
             </div>
           )}
 

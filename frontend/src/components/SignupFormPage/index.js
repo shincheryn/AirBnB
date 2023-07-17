@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import * as sessionActions from '../../store/session';
-import './SignupForm.css';
+import React, { useState, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { ModalContext } from "../../context/Modal";
+import * as sessionActions from "../../store/session";
+import "./SignupForm.css";
 
 function SignupFormPage({ onClose }) {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const { setModalContent } = useContext(ModalContext);
 
   if (sessionUser) return <Redirect to="/" />;
+
+  const shouldDisableSignUp = () => {
+    if (
+      !email ||
+      !username ||
+      !firstName ||
+      !lastName ||
+      !password ||
+      !confirmPassword ||
+      username.length < 4 ||
+      password.length < 6 ||
+      password !== confirmPassword
+    )
+      return true;
+    return false;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +42,7 @@ function SignupFormPage({ onClose }) {
       if (password.length < 6) {
         setErrors((prevState) => ({
           ...prevState,
-          password: 'Password must be 6 characters or more',
+          password: "Password must be 6 characters or more",
         }));
         return;
       }
@@ -35,21 +53,35 @@ function SignupFormPage({ onClose }) {
         lastName,
         password,
       };
-      const res = await dispatch(sessionActions.signup(user));
-      if (res.ok) {
-        onClose(); // Close the modal
+      let res = {};
+      await dispatch(sessionActions.signup(user)).catch(async (response) => {
+        res = await response.json();
+      });
+
+      if (res.errors) {
+        setErrors(res.errors);
       } else {
-        const data = await res.json();
-        if (data.errors) {
-          setErrors(data.errors);
-        }
+        onClose(); // Close the modal
       }
     } else {
       setErrors((prevState) => ({
         ...prevState,
-        confirmPassword: 'Confirm Password field must be the same as the Password field',
+        confirmPassword:
+          "Confirm Password field must be the same as the Password field",
       }));
     }
+  };
+
+  //Close Modal
+  const handleModalClose = () => {
+    setEmail("");
+    setUsername("");
+    setFirstName("");
+    setLastName("");
+    setPassword("");
+    setConfirmPassword("");
+    setErrors({});
+    setModalContent(null);
   };
 
   return (
@@ -116,7 +148,12 @@ function SignupFormPage({ onClose }) {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button disabled={shouldDisableSignUp()} type="submit">
+          Sign Up
+        </button>
+        <button type="button" onClick={handleModalClose}>
+          Cancel
+        </button>
       </form>
     </>
   );

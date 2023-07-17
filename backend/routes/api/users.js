@@ -51,6 +51,7 @@ router.post(
       const safeUser = {
         id: user.id,
         email: user.email,
+        firstName: user.firstName,
         username: user.username,
       };
 

@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { fetchSpots } from '../../store/spots';
-import './spots.css';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { fetchSpots } from "../../store/spots";
+import "./spots.css";
 
 function Spots() {
   const dispatch = useDispatch();
   let spots = useSelector((state) => state.spots);
   const history = useHistory();
-  spots = Object.entries(spots).filter(([key]) => key !== 'detail');
+  spots = Object.entries(spots).filter(([key]) => key !== "detail");
+  console.log(spots);
 
   useEffect(() => {
     dispatch(fetchSpots());
@@ -30,7 +31,9 @@ function Spots() {
           >
             <div
               className="spot-image"
-              style={{ backgroundImage: `url(${spot?.image})` }}
+              style={{
+                backgroundImage: `url(${spot.SpotImages[0]?.url})`,
+              }}
             ></div>
             <div className="spot-details">
               <div className="spot-location">{`${spot?.city}, ${spot?.state}`}</div>
