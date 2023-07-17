@@ -11,7 +11,6 @@ function SpotDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const spot = useSelector((state) => state.spots[id]);
-  console.log(spot);
   const reviews = useSelector((state) =>
     Object.values(state.reviews).filter(
       (review) => review.spotId === parseInt(id)
@@ -103,9 +102,7 @@ function SpotDetail() {
               <div className="spot-callout-rating">
                 <i className="fa-solid fa-star"></i> NEW
               </div>
-              {spot?.Owner?.id !== currentUser?.id && (
-                <p>Be the first to post a review!</p>
-              )}
+              {spot?.Owner?.id !== currentUser?.id && <p>Be the first to post a review!</p>}
             </div>
           ) : (
             <div>

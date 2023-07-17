@@ -136,3 +136,19 @@
 .review p:last-child {
   margin-top: 10px;
 }
+
+.spot-details {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.spot-description {
+  flex: 2; /* Take up remaining space */
+  margin-right: 20px; /* Add some spacing between the description and callout */
+}
+
+.spot-callout {
+  flex: 0 0 35%; /* Set a fixed width for the callout information box */
+  margin-top: 0; /* Remove the top margin */
+}
