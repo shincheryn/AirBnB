@@ -56,15 +56,24 @@
   color: #555;
 }
 
+.spot-description-callout-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .spot-description {
+  flex: 0 0 50%; /* Set a fixed width for the callout information box */
   font-size: 16px;
   margin-bottom: 20px;
 }
 
 .spot-callout {
   display: flex;
+  flex: 0 0 50%; /* Set a fixed width for the callout information box */
+  align-items: center;
   flex-direction: column;
-  align-items: flex-start;
   background-color: #f7f7f7;
   padding: 10px;
   border-radius: 4px;
@@ -141,14 +150,4 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-}
-
-.spot-description {
-  flex: 2; /* Take up remaining space */
-  margin-right: 20px; /* Add some spacing between the description and callout */
-}
-
-.spot-callout {
-  flex: 0 0 35%; /* Set a fixed width for the callout information box */
-  margin-top: 0; /* Remove the top margin */
 }

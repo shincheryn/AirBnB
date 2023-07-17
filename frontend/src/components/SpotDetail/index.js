@@ -94,33 +94,36 @@ function SpotDetail() {
         <div className="spot-host">
           Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}
         </div>
-        <p className="spot-description">{spot?.description}</p>
-        <div className="spot-callout">
-          <div className="spot-callout-price">${spot?.price} / night</div>
-          {totalReviews === 0 ? (
-            <div>
-              <div className="spot-callout-rating">
-                <i className="fa-solid fa-star"></i> NEW
+        <div className="spot-description-callout-container">
+          <p className="spot-description">{spot?.description}</p>
+          <div className="spot-callout">
+            <div className="spot-callout-price">${spot?.price} / night</div>
+            {totalReviews === 0 ? (
+              <div>
+                <div className="spot-callout-rating">
+                  <i className="fa-solid fa-star"></i> NEW
+                </div>
+                {spot?.Owner?.id !== currentUser?.id && (
+                  <p>Be the first to post a review!</p>
+                )}
               </div>
-              {spot?.Owner?.id !== currentUser?.id && <p>Be the first to post a review!</p>}
-            </div>
-          ) : (
-            <div>
-              <div className="spot-callout-rating">
-                <i className="fa-solid fa-star"></i> Rating:{" "}
-                {averageRating.toFixed(2)}
+            ) : (
+              <div>
+                <div className="spot-callout-rating">
+                  <i className="fa-solid fa-star"></i> Rating:{" "}
+                  {averageRating.toFixed(2)}
+                </div>
+                <div className="spot-callout-reviews">
+                  Reviews: {totalReviews}
+                </div>
               </div>
-              <div className="spot-callout-reviews">
-                Reviews: {totalReviews}
-              </div>
-            </div>
-          )}
+            )}
 
-          <button className="reserve-button" onClick={handleReserveClick}>
-            Reserve
-          </button>
+            <button className="reserve-button" onClick={handleReserveClick}>
+              Reserve
+            </button>
+          </div>
         </div>
-
         <div className="reviews-container">
           {totalReviews === 0 ? (
             <div>
