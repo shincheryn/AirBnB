@@ -94,7 +94,7 @@ function SpotDetail() {
         <div className="spot-host">
           Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}
         </div>
-        <div className="spot-description-callout-container">
+        <div classname="spot-description-callout-container">
           <p className="spot-description">{spot?.description}</p>
           <div className="spot-callout">
             <div className="spot-callout-price">${spot?.price} / night</div>
