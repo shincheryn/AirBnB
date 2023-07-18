@@ -12,7 +12,7 @@ module.exports = {
       {
         imageableId: 1,
         imageableType: 'Review',
-        url: 'image url',
+        url: 'https://cdn.britannica.com/13/77413-050-95217C0B/Golden-Gate-Bridge-San-Francisco.jpg',
         preview: true,
         createdAt: "2021-11-19 20:39:36",
         updatedAt: "2021-11-19 20:39:36"
@@ -20,7 +20,7 @@ module.exports = {
       {
         imageableId: 2,
         imageableType: 'Spot',
-        url: 'image url',
+        url: 'https://www.travelandleisure.com/thmb/91pb8LbDAUwUN_11wATYjx5oF8Q=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/new-york-city-evening-NYCTG0221-52492d6ccab44f328a1c89f41ac02aea.jpg',
         preview: false,
         createdAt: "2022-11-19 20:39:36",
         updatedAt: "2022-11-19 20:39:36",
